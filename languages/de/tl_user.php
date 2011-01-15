@@ -1,0 +1,52 @@
+<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
+
+/**
+ * Contao Open Source CMS
+ * Copyright (C) 2005-2010 Leo Feyer
+ *
+ * Formerly known as TYPOlight Open Source CMS.
+ *
+ * This program is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation, either
+ * version 3 of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program. If not, please visit the Free
+ * Software Foundation website at <http://www.gnu.org/licenses/>.
+ *
+ * PHP version 5
+ * @copyright  Yanick Witschi 2010
+ * @author     Yanick Witschi <http://www.certo-net.ch>
+ * @package    Backend
+ * @license    LGPL
+ * @filesource
+ */
+
+/**
+ * Table tl_user
+ */
+$GLOBALS['TL_LANG']['tl_user']['enableEasyTheme']       = array('EasyTheme aktivieren','Aktivieren Sie diese Checkbox, wenn Sie EasyTheme verwenden möchten.');
+$GLOBALS['TL_LANG']['tl_user']['EasyThemeMode']         = array('EasyTheme Modus','Wählen Sie aus, ob Sie EasyTheme lieber als Kontextmenü, beim Mouseover oder als direkten DOM-Inject anzeigen möchten.');
+$GLOBALS['TL_LANG']['tl_user']['showShortEasyTheme']    = array('Kurzansicht aktivieren','Aktivieren Sie die Kurzansicht für EasyTheme.');
+$GLOBALS['TL_LANG']['tl_user']['activeModules']         = array('Aktive Module','Wählen Sie hier die Module aus, die Sie angezeigt haben möchten.');
+$GLOBALS['TL_LANG']['tl_user']['activeThemes']          = array('Aktive Themes','Wählen Sie hier die Themes aus, die Sie angezeigt haben möchten.');
+$GLOBALS['TL_LANG']['tl_user']['contextmenu']           = 'Kontextmenü';
+$GLOBALS['TL_LANG']['tl_user']['mouseover']             = 'Mouseover';
+$GLOBALS['TL_LANG']['tl_user']['inject']                = 'DOM-Inject';
+
+/**
+ * Legends
+ */
+$GLOBALS['TL_LANG']['tl_user']['EasyTheme_legend'] = 'EasyTheme';
+
+/**
+ * Error message for Widget
+ */
+$GLOBALS['TL_LANG']['tl_user']['chooseAtLeastOne'] = 'Sie müssen beim Feld "%s" mindestens eine Wahl treffen!';
+?>
