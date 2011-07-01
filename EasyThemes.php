@@ -128,9 +128,13 @@ class EasyThemes extends Backend
 			$arr = array();
 			$arrAllThemes = $this->getThemes();
 			
-			foreach($arrAllThemes as $themeId => $themeName)
+			// only if we do have themes - thanks to Leo Unglaub
+			if($arrAllThemes)
 			{
-				$arr[$themeId] = 1;
+				foreach($arrAllThemes as $themeId => $themeName)
+				{
+					$arr[$themeId] = 1;
+				}			
 			}
 			
 			$activeThemes = $arr;
@@ -264,12 +268,18 @@ class EasyThemes extends Backend
 
 	/**
      * Return an array of all Themes available
-     * @return array
+     * @return mixed
      */
 	public function getThemes()
 	{
-		$arrReturn;
 		$objThemes = $this->Database->query("SELECT id,name FROM tl_theme ORDER BY name");
+		if(!$objThemes->numRows)
+		{
+			return false;
+		}
+		
+		$arrReturn = array();
+		
 		while($objThemes->next())
 		{
 			$arrReturn[$objThemes->id] = $objThemes->name;

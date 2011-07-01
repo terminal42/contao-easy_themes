@@ -47,6 +47,13 @@ var EasyThemes = new Class({
 	{
 		this.setOptions(options);
 		
+		// abort if the handle is null (layout section collapsed)
+		if(!$type(this.options.handle))
+		{
+			this.options.container.destroy();
+			return;
+		}
+		
         // hide container - IE bug
         this.hideContainer(true);
 
@@ -77,7 +84,7 @@ var EasyThemes = new Class({
 		// Register contextmenu event on handle
 		$(this.options.handle).addEvent('contextmenu', function(e)
 		{
-			e.stop();
+			e.preventDefault();
 			this.showContainer();
 		}.bind(this));
 		
