@@ -317,6 +317,12 @@ class EasyThemes extends Backend
 			$this->import('BackendUser', 'User');
 			$arrAllThemes = $this->getThemes();
 			
+			// prevent exception when no theme available
+			if(!$arrAllThemes)
+			{
+				return $varValue;
+			}
+			
 			foreach($arrAllThemes as $themeId => $themeName)
 			{
 				$arr[$themeId] = 1;
