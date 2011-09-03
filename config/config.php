@@ -1,4 +1,4 @@
-<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
+<?php if (!defined('TL_ROOT')) die('You cannot access this file directly!');
 
 /**
  * Contao Open Source CMS
@@ -21,9 +21,9 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Yanick Witschi 2010
- * @author     Yanick Witschi <http://www.certo-net.ch>
- * @package    Backend
+ * @copyright  Yanick Witschi 2011
+ * @author     Yanick Witschi <yanick.witschi@certo-net.ch>
+ * @package    easy_themes
  * @license    LGPL
  * @filesource
  */
@@ -85,12 +85,12 @@ $GLOBALS['TL_EASY_THEMES_MODULES'] = array_merge
 // fix database error - see #822
 if(!(($_GET['do'] == 'repository_manager' && $_GET['uninstall'] == 'easy_themes') || getBaseScript() == $GLOBALS['TL_CONFIG']['websitePath'] . '/contao/install.php'))
 {
-  if(TL_MODE == 'BE')
-  {
-    $GLOBALS['TL_HOOKS']['parseBackendTemplate'][]              = array('EasyThemes', 'addContainer');
-    $GLOBALS['TL_HOOKS']['loadLanguageFile']['EasyThemesHook']  = array('EasyThemes', 'addHeadings');
-    $GLOBALS['TL_HOOKS']['loadDataContainer'][]					= array('EasyThemes', 'setUser');
-  }
+	if(TL_MODE == 'BE')
+	{
+		$GLOBALS['TL_HOOKS']['parseBackendTemplate'][]              = array('EasyThemes', 'addContainer');
+		$GLOBALS['TL_HOOKS']['loadLanguageFile']['EasyThemesHook']  = array('EasyThemes', 'addHeadings');
+		$GLOBALS['TL_HOOKS']['loadDataContainer'][]					= array('EasyThemes', 'setUser');
+	}
 }
 
 

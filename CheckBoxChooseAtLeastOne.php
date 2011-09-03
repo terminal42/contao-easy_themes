@@ -1,4 +1,4 @@
-<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
+<?php if (!defined('TL_ROOT')) die('You cannot access this file directly!');
 
 /**
  * Contao Open Source CMS
@@ -21,9 +21,9 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Yanick Witschi 2010
- * @author     Yanick Witschi <http://www.certo-net.ch>
- * @package    Backend
+ * @copyright  Yanick Witschi 2011
+ * @author     Yanick Witschi <yanick.witschi@certo-net.ch>
+ * @package    easy_themes
  * @license    LGPL
  * @filesource
  */
@@ -32,8 +32,8 @@
  * Class CheckBoxChooseAtLeastOne
  *
  * Checks if there has been at least one entry been chosen on a multiple checkbox wizard
- * @copyright  Yanick Witschi 2010
- * @author     Yanick Witschi <http://www.certo-net.ch>
+ * @author     Yanick Witschi <yanick.witschi@certo-net.ch>
+ * @package    easy_themes
  * @package    Backend
  */
 class CheckBoxChooseAtLeastOne extends Checkbox

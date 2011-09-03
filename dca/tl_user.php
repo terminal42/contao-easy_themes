@@ -1,4 +1,4 @@
-<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
+<?php if (!defined('TL_ROOT')) die('You cannot access this file directly!');
 
 /**
  * Contao Open Source CMS
@@ -21,9 +21,9 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Yanick Witschi 2010
- * @author     Yanick Witschi <http://www.certo-net.ch>
- * @package    Backend
+ * @copyright  Yanick Witschi 2011
+ * @author     Yanick Witschi <yanick.witschi@certo-net.ch>
+ * @package    easy_themes
  * @license    LGPL
  * @filesource
  */
@@ -41,56 +41,109 @@ foreach($GLOBALS['TL_DCA']['tl_user']['palettes'] as $palette =>$v)
     
     if(BackendUser::getInstance()->hasAccess('themes', 'modules'))
     {
-        $GLOBALS['TL_DCA']['tl_user']['palettes'][$palette] = str_replace('oldBeTheme;','oldBeTheme;{EasyTheme_legend},enableEasyTheme;',$GLOBALS['TL_DCA']['tl_user']['palettes'][$palette]);        
+        $GLOBALS['TL_DCA']['tl_user']['palettes'][$palette] = str_replace('oldBeTheme;','oldBeTheme;{et_legend},et_enable;',$GLOBALS['TL_DCA']['tl_user']['palettes'][$palette]);        
     }
 }
 
 // extend selector
-$GLOBALS['TL_DCA']['tl_user']['palettes']['__selector__'][] = 'enableEasyTheme';
+$GLOBALS['TL_DCA']['tl_user']['palettes']['__selector__'][] = 'et_enable';
 
 // extend subpalettes
-$GLOBALS['TL_DCA']['tl_user']['subpalettes']['enableEasyTheme'] = 'showShortEasyTheme,EasyThemeMode,activeThemes,activeModules';
+$GLOBALS['TL_DCA']['tl_user']['subpalettes']['et_enable'] = 'et_mode,et_short,et_activeModules';
 
 // add fields
-$GLOBALS['TL_DCA']['tl_user']['fields']['enableEasyTheme'] = array
+$GLOBALS['TL_DCA']['tl_user']['fields']['et_enable'] = array
 (
-	'label'                   => &$GLOBALS['TL_LANG']['tl_user']['enableEasyTheme'],
+	'label'                   => &$GLOBALS['TL_LANG']['tl_user']['et_enable'],
 	'exclude'                 => true,
 	'inputType'               => 'checkbox',
 	'eval'					  => array('submitOnChange'=>true, 'tl_class'=>'tl_checkbox_single_container')
 );
-$GLOBALS['TL_DCA']['tl_user']['fields']['showShortEasyTheme'] = array
+$GLOBALS['TL_DCA']['tl_user']['fields']['et_short'] = array
 (
-	'label'                   => &$GLOBALS['TL_LANG']['tl_user']['showShortEasyTheme'],
+	'label'                   => &$GLOBALS['TL_LANG']['tl_user']['et_short'],
 	'exclude'                 => true,
 	'inputType'               => 'checkbox',
-	'eval'					  => array('tl_class'=>'w50 cbx m12')
+	'eval'					  => array('tl_class'=>'clr')
 );
-$GLOBALS['TL_DCA']['tl_user']['fields']['EasyThemeMode'] = array
+$GLOBALS['TL_DCA']['tl_user']['fields']['et_mode'] = array
 (
-	'label'                   => &$GLOBALS['TL_LANG']['tl_user']['EasyThemeMode'],
+	'label'                   => &$GLOBALS['TL_LANG']['tl_user']['et_mode'],
 	'exclude'                 => true,
 	'inputType'               => 'select',
 	'options'                 => array('contextmenu','mouseover','inject'),
 	'reference'               => &$GLOBALS['TL_LANG']['tl_user'],
-	'eval'					  => array('tl_class'=>'w50')
+	'eval'					  => array('tl_class'=>'clr', 'submitOnChange'=>true)
 );
-$GLOBALS['TL_DCA']['tl_user']['fields']['activeModules'] = array
+$GLOBALS['TL_DCA']['tl_user']['fields']['et_activeModules'] = array
 (
-    'label'                   => &$GLOBALS['TL_LANG']['tl_user']['activeModules'],
+    'label'                   => &$GLOBALS['TL_LANG']['tl_user']['et_activeModules'],
 	'exclude'                 => true,
     'inputType'               => 'checkbox_minOne',
-    'options_callback'        => array('EasyThemes', 'getThemeModules'),
-	'eval'					  => array('multiple'=>true)
+    'options_callback'        => array('tl_user_easy_themes', 'getThemeModules'),
+	'reference'               => &$GLOBALS['TL_LANG']['tl_user']['et_activeModules'],
+	'eval'					  => array('multiple'=>true,'tl_class'=>'clr')
 );
-$GLOBALS['TL_DCA']['tl_user']['fields']['activeThemes'] = array
-(
-    'label'                   => &$GLOBALS['TL_LANG']['tl_user']['activeThemes'],
-	'exclude'                 => true,
-    'inputType'               => 'checkbox_minOne',
-    'options_callback'        => array('EasyThemes', 'getThemes'),
-	'eval'					  => array('multiple'=>true, 'tl_class'=>'clr'),
-	'load_callback'			  => array(array('EasyThemes', 'checkOnUpdate'))
-);
+
+class tl_user_easy_themes extends Backend
+{
+
+    /**
+     * Initialize the object and import EasyThemes
+     */ 	
+    public function __construct()
+    {
+        parent::__construct();
+		$this->import('EasyThemes');
+    }
+
+	
+    /**
+     * Return an array of the theme modules with their corresponding language label
+	 * @param DataContainer
+     * @return array
+     */
+	public function getThemeModules(DataContainer $dc)
+	{
+		// if we don't have any themes at all this is going to be as empty as void
+		$arrThemes = $this->EasyThemes->getThemes();
+		if(!$arrThemes)
+		{
+			return array();
+		}
+		
+		// build the modules array
+		$this->loadLanguageFile('tl_theme');
+		$arrModules  = array();
+		foreach($GLOBALS['TL_EASY_THEMES_MODULES'] as $strModule => $arrModule)
+		{
+			if(isset($arrModule['label']))
+			{
+				$label = $arrModule['label'];
+			}
+			else
+			{
+				$label = $GLOBALS['TL_LANG']['tl_theme'][$strModule][0];
+			}
+			
+			$arrModules[$strModule] = $label;
+		}
+
+		// add the modules array to every theme
+		$arrReturn = array();
+		foreach($arrThemes as $intThemeId => $strThemeName)
+		{
+			foreach($arrModules as $strModule => $strLabel)
+			{
+				// add it to the array
+				$arrReturn['theme_' . $intThemeId][specialchars($intThemeId . '::' . $strModule)] = $strLabel;
+			}
+					
+			// add the label
+			$GLOBALS['TL_LANG']['tl_user']['et_activeModules']['theme_' . $intThemeId] = $strThemeName;
+		}
+		return $arrReturn;
+	}
+}
 
 ?>

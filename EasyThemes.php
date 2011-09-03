@@ -1,4 +1,4 @@
-<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
+<?php if (!defined('TL_ROOT')) die('You cannot access this file directly!');
 
 /**
  * Contao Open Source CMS
@@ -21,9 +21,9 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Yanick Witschi 2010
- * @author     Yanick Witschi <http://www.certo-net.ch>
- * @package    Backend
+ * @copyright  Yanick Witschi 2011
+ * @author     Yanick Witschi <yanick.witschi@certo-net.ch>
+ * @package    easy_themes
  * @license    LGPL
  * @filesource
  */
@@ -32,9 +32,9 @@
  * Class EasyThemes
  *
  * Adds the container the JS is calling for to the backend template
- * @copyright  Yanick Witschi 2010
- * @author     Yanick Witschi <http://www.certo-net.ch>
- * @package    Backend
+ * @copyright  Yanick Witschi 2011
+ * @author     Yanick Witschi <yanick.witschi@certo-net.ch>
+ * @package    easy_themes
  */
 class EasyThemes extends Backend
 {
@@ -56,17 +56,10 @@ class EasyThemes extends Backend
 	 */	
 	public function addHeadings($strName, $strLanguage)
 	{
-		if($this->User->enableEasyTheme == 1)
+		if($this->User->et_enable == 1)
 		{
-			$strType = ($this->User->showShortEasyTheme == 1) ? 'Short' : 'Long';
-			
-			if($this->User->EasyThemeMode == 'inject')
-			{
-				$strType .= 'Inject';
-			}
-			
-			$GLOBALS['TL_CSS']['EasyThemesHeadingsCSS'.$strType] = 'system/modules/easy_themes/html/EasyThemes'.$strType.'.css|screen';
-			$GLOBALS['TL_JAVASCRIPT']['EasyThemesHeadingsJS'] = 'system/modules/easy_themes/html/EasyThemes_class.js';
+			$GLOBALS['TL_CSS'][]		= 'system/modules/easy_themes/html/easy_themes.css|screen';
+			$GLOBALS['TL_JAVASCRIPT'][]	= 'system/modules/easy_themes/html/easy_themes.js';
 		}
 		
 		// make sure the hook is only executed once
@@ -99,180 +92,34 @@ class EasyThemes extends Backend
 	 */
 	protected function generateContainerContent()
 	{
-        $objTemplate = new BackendTemplate('be_easythemes');
+		// we disable easy_themes if:
+		// - it has been disabled (what a luminary)
+		// - there is no theme at all
+		// - the user has no module activated at all
+		$arrAllThemes	= $this->getThemes();
+		$arrNavArray	= $this->prepareBackendNavigationArray();
 		
-		// if the module is inactive we set the template var and stop it here
-		if($this->User->enableEasyTheme != 1)
+		if($this->User->et_enable != 1 || !$arrAllThemes || !$arrNavArray)
 		{			
-			$objTemplate->isActive = false;
-			return $objTemplate->parse();
+			return '';
 		}
 		
-		$objTemplate->isActive = true;
-		
-		// set mode ('contextmenu' or 'mouseover'), default ist contextmenu
-		$objTemplate->mode = $this->User->EasyThemeMode;
-		
-		// get all the themes
-		$arrThemes = $this->Database->query("SELECT id,name FROM tl_theme ORDER BY name")->fetchAllAssoc();
-
-		// filter for the themes we don't want to show
-		// if activeThemes is not set yet, we just show all themes - see #999
-		$activeThemes = null;
-		if($this->User->activeThemes)
-		{
-			$activeThemes = $this->User->activeThemes;
-		}
-		else
-		{
-			$arr = array();
-			$arrAllThemes = $this->getThemes();
-			
-			// only if we do have themes - thanks to Leo Unglaub
-			if($arrAllThemes)
-			{
-				foreach($arrAllThemes as $themeId => $themeName)
-				{
-					$arr[$themeId] = 1;
-				}			
-			}
-			
-			$activeThemes = $arr;
-		}
-
-		foreach($arrThemes as $k => $theme)
-		{
-			if(!in_array($theme[id], $activeThemes))
-			{
-				unset($arrThemes[$k]);
-			}
-		}
-		
-		if(!count($arrThemes))
-		{
-			$objTemplate->hasThemes = false;
-			$objTemplate->noThemes = '<p>No theme added yet!</p>';
-			return $objTemplate->parse();
-		}
-		
-        $this->loadLanguageFile('tl_theme');
-		$objTemplate->hasThemes = true;
- 
-        // check which theme modules the user wants to display
-        // if the user hasn't stored any active modules yet we just show the edit button
-        $activeModules = $this->User->activeModules;
-        $arrModules = array_keys($GLOBALS['TL_EASY_THEMES_MODULES']);
-        
-        if(!is_array($activeModules) && count($activeModules) == 0)
-        {
-          $activeModules = $arrModules;
-        }
-
-        $activeModules = array_intersect($arrModules, $activeModules);
-        
-        // start the list and loop through all themes
-        $strHTML = '  <ul class="easytheme_level1">' . "\n";
-    
-		foreach($arrThemes as $theme)
-		{
-            $strHTML .= '    <li class="easytheme_level_1_group">' . $theme['name'] . "\n";
-            $strHTML .= '      <ul class="easytheme_level2">' . "\n";
-      
-            foreach($activeModules as $module)
-            {
-                $strHTML .= '        <li class="easytheme_level_2_link">' . "\n";
-                
-        		// $title - takes the given title from the TL_EASY_THEMES_MODULES array or by default $GLOBALS['TL_LANG']['tl_theme']['...'][1]
-				if(isset($GLOBALS['TL_EASY_THEMES_MODULES'][$module]['title']))
-				{
-					$title = $GLOBALS['TL_EASY_THEMES_MODULES'][$module]['title'];
-				}
-				else
-				{
-					$title = sprintf($GLOBALS['TL_LANG']['tl_theme'][$module][1], $theme['id']);
-				}
-
-				// $label - takes the given label from the TL_EASY_THEMES_MODULES array or by default $GLOBALS['TL_LANG']['tl_theme']['...'][0]
-				if(isset($GLOBALS['TL_EASY_THEMES_MODULES'][$module]['label']))
-				{
-					$label = ' ' . $GLOBALS['TL_EASY_THEMES_MODULES'][$module]['label'];
-				}
-				else
-				{
-					$label = ' ' . $GLOBALS['TL_LANG']['tl_theme'][$module][0];
-				}
-
-				// $href - also see the comments in config/config.php
-				if(isset($GLOBALS['TL_EASY_THEMES_MODULES'][$module]['href']))
-				{
-					$href = sprintf($GLOBALS['TL_EASY_THEMES_MODULES'][$module]['href'], $theme['id']);
-				}
-				else if(isset($GLOBALS['TL_EASY_THEMES_MODULES'][$module]['href_fragment']))
-				{
-					$href = $this->Environment->script . '?do=themes&amp;' . $GLOBALS['TL_EASY_THEMES_MODULES'][$module]['href_fragment'] . '&amp;id=' . $theme['id'];
-				}
-				else
-				{
-					$href = 'javascript:alert(\'No href_fragment or href is specified for this module!\');';
-				}
-
-				// $icon - takes the given icon from the TL_EASY_THEMES_MODULES array or by default uses the generateImage() method
-				if(isset($GLOBALS['TL_EASY_THEMES_MODULES'][$module]['icon']))
-				{
-					$img = $this->generateImage($GLOBALS['TL_EASY_THEMES_MODULES'][$module]['icon'], $label);
-				}
-				else
-				{
-					$img = $this->generateImage($module . '.gif', $label);
-				}
-        
-                $strHTML .= '          <a title="' . $title . '" href="' . $href . '">' . $img . (($this->User->showShortEasyTheme == 1) ? '' : $label) . '</a>' . "\n";    
-                $strHTML .= '        </li>' . "\n";  
-            }
-      
-            $strHTML .= '      </ul>' . "\n";
-            $strHTML .= '    </li>' . "\n";
-        }
-    
-        $strHTML .= '  </ul>' . "\n";
-		$objTemplate->themes = $strHTML;
+        $objTemplate = new BackendTemplate('be_easythemes');
+		$objTemplate->mode		= $this->User->et_mode;
+        $objTemplate->short		= $this->User->et_short;
+		$objTemplate->class		= 'easythemes_' . $this->User->et_mode . ' easythemes_' . ($this->User->et_short ? 'short' : 'long');
+		$objTemplate->themes	= $arrNavArray;
 		return $objTemplate->parse();
 	}
 
 
-    /**
-     * Return an array of the theme modules with their corresponding language label
-     * @return array
-     */
-	public function getThemeModules()
-	{
-		$this->loadLanguageFile('tl_theme');
-		$arrReturn  = array();
-
-		foreach($GLOBALS['TL_EASY_THEMES_MODULES'] as $strModule => $arrModule)
-		{
-			if(isset($arrModule['label']))
-			{
-				$label = $arrModule['label'];
-			}
-			else
-			{
-				$label = $GLOBALS['TL_LANG']['tl_theme'][$strModule][0];
-			}
-			$arrReturn[$strModule] = $label;
-		}
-		
-		return $arrReturn;
-	}	
-	
-
 	/**
      * Return an array of all Themes available
-     * @return mixed
+     * @return array|false
      */
 	public function getThemes()
 	{
-		$objThemes = $this->Database->query("SELECT id,name FROM tl_theme ORDER BY name");
+		$objThemes = $this->Database->execute('SELECT id,name FROM tl_theme ORDER BY name');
 		if(!$objThemes->numRows)
 		{
 			return false;
@@ -302,36 +149,94 @@ class EasyThemes extends Backend
 		}
 	}
 	
-	
-	/**
-	 * Checks if there has been made a choice of themes already and if not, sets all themes by default
-	 * @param mixed
-	 * @param object
-	 * @return
-	 */
-	public function checkOnUpdate($varValue, DataContainer $dc)
-	{
-		if(!$varValue)
-		{
-			$arr = array();
-			$this->import('BackendUser', 'User');
-			$arrAllThemes = $this->getThemes();
-			
-			// prevent exception when no theme available
-			if(!$arrAllThemes)
-			{
-				return $varValue;
-			}
-			
-			foreach($arrAllThemes as $themeId => $themeName)
-			{
-				$arr[$themeId] = 1;
-			}
-			
-			$varValue = $arr;
-		}
 
-		return $varValue;
+	/**
+	 * Prepares an array for the backend navigation
+	 * @param boolean
+	 * @return array|false
+	 */
+	protected function prepareBackendNavigationArray($blnForceToShowLabel=false)
+	{
+        // check which theme modules the user wants to display
+        // if the user hasn't stored any active modules yet we return false
+        $arret_activeModules = $this->User->et_activeModules;
+		if(!is_array($arret_activeModules))
+		{
+			return false;
+		}
+		
+        $this->loadLanguageFile('tl_theme');
+		$arrReturn = array();		
+		$arrThemeIds = array();
+		
+		foreach($arret_activeModules as $strConfig)
+		{
+			$arrConfig = explode('::', $strConfig, 2);
+			$intThemeId = (int) $arrConfig[0];
+			$strModule = $arrConfig[1];
+			
+			// get the theme title
+			$objTitle = $this->Database->prepare("SELECT name FROM tl_theme WHERE id=?")->execute($intThemeId);
+			$arrReturn[$intThemeId]['label'] = $objTitle->name;
+			
+    		// $title - takes the given title from the TL_EASY_THEMES_MODULES array or by default $GLOBALS['TL_LANG']['tl_theme']['...'][1]
+			if(isset($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['title']))
+			{
+				$title = $GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['title'];
+			}
+			else
+			{
+				$title = sprintf($GLOBALS['TL_LANG']['tl_theme'][$strModule][1], $intThemeId);
+			}
+
+			// $label - takes the given label from the TL_EASY_THEMES_MODULES array or by default $GLOBALS['TL_LANG']['tl_theme']['...'][0]
+			if(isset($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['label']))
+			{
+				$label = $GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['label'];
+			}
+			else
+			{
+				$label = $GLOBALS['TL_LANG']['tl_theme'][$strModule][0];
+			}
+
+			// $href - also see the comments in config/config.php
+			if(isset($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['href']))
+			{
+				$href = sprintf($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['href'], $intThemeId);
+			}
+			else if(isset($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['href_fragment']))
+			{
+				$href = $this->Environment->script . '?do=themes&amp;' . $GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['href_fragment'] . '&amp;id=' . $intThemeId;
+			}
+			else
+			{
+				$href = 'javascript:alert(\'No href_fragment or href is specified for this module!\');';
+			}
+
+			// $icon - takes the given icon from the TL_EASY_THEMES_MODULES array or by default uses the generateImage() method
+			if(isset($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['icon']))
+			{
+				$img = $this->generateImage($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['icon'], $label);
+				$imgOrgPath = $GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['icon'];
+			}
+			else
+			{
+				$img = $this->generateImage($strModule . '.gif', $label);
+				$imgOrgPath = sprintf('system/themes/%s/images/%s', $this->getTheme(), $strModule . '.gif');
+			}
+			
+			// add it to the array
+			$arrReturn[$intThemeId]['modules'][$strModule] = array
+			(
+				'title'			=> $title,
+				'href'			=> $href,
+				'img'			=> $img,
+				'imgOrgPath'	=> $imgOrgPath,
+				'label'			=> (($this->User->et_short == 1 && !$blnForceToShowLabel) ? '' : $label)
+			);
+		}
+		
+		return $arrReturn;
 	}
 }
 

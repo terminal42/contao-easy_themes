@@ -15,9 +15,8 @@
 -- 
 
 CREATE TABLE `tl_user` (
-  `enableEasyTheme` char(1) NOT NULL default '',
-  `EasyThemeMode` varchar(32) NOT NULL default 'contextmenu',
-  `showShortEasyTheme` char(1) NOT NULL default '',
-  `activeModules` blob NULL,  
-  `activeThemes` blob NULL,  
+  `et_enable` char(1) NOT NULL default '',
+  `et_mode` varchar(32) NOT NULL default 'contextmenu',
+  `et_short` char(1) NOT NULL default '',
+  `et_activeModules` blob NULL,
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
