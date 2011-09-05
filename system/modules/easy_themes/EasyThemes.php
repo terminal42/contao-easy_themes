@@ -104,9 +104,9 @@ class EasyThemes extends Backend
 			return '';
 		}
 		
-        $objTemplate = new BackendTemplate('be_easythemes');
+		$objTemplate = new BackendTemplate('be_easythemes');
 		$objTemplate->mode		= $this->User->et_mode;
-        $objTemplate->short		= $this->User->et_short;
+		$objTemplate->short		= $this->User->et_short;
 		$objTemplate->class		= 'easythemes_' . $this->User->et_mode . ' easythemes_' . ($this->User->et_short ? 'short' : 'long');
 		$objTemplate->themes	= $arrNavArray;
 		return $objTemplate->parse();
@@ -166,8 +166,7 @@ class EasyThemes extends Backend
 		}
 		
         $this->loadLanguageFile('tl_theme');
-		$arrReturn = array();		
-		$arrThemeIds = array();
+		$arrReturn = array();
 		
 		foreach($arrActiveModules as $strConfig)
 		{
