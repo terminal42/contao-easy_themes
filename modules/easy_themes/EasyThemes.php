@@ -159,8 +159,8 @@ class EasyThemes extends Backend
 	{
         // check which theme modules the user wants to display
         // if the user hasn't stored any active modules yet we return false
-        $arret_activeModules = $this->User->et_activeModules;
-		if(!is_array($arret_activeModules))
+        $arrActiveModules = $this->User->et_activeModules;
+		if(!is_array($arrActiveModules))
 		{
 			return false;
 		}
@@ -169,7 +169,7 @@ class EasyThemes extends Backend
 		$arrReturn = array();		
 		$arrThemeIds = array();
 		
-		foreach($arret_activeModules as $strConfig)
+		foreach($arrActiveModules as $strConfig)
 		{
 			$arrConfig = explode('::', $strConfig, 2);
 			$intThemeId = (int) $arrConfig[0];
