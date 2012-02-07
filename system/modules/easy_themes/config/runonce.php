@@ -137,4 +137,3 @@ class EasyThemesRunOnce extends Controller
  */
 $objEasyThemesRunOnce = new EasyThemesRunOnce();
 $objEasyThemesRunOnce->run();
-

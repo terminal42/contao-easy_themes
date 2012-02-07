@@ -238,5 +238,3 @@ class EasyThemes extends Backend
 		return $arrReturn;
 	}
 }
-
-?>

@@ -49,4 +49,3 @@ $GLOBALS['TL_LANG']['tl_user']['et_legend'] = 'easy_themes';
  * Error message for Widget
  */
 $GLOBALS['TL_LANG']['tl_user']['chooseAtLeastOne'] = 'Sie müssen beim Feld "%s" mindestens eine Wahl treffen!';
-?>

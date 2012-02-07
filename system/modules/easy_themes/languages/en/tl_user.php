@@ -48,4 +48,3 @@ $GLOBALS['TL_LANG']['tl_user']['et_legend'] = 'easy_themes';
  * Error message for Widget
  */
 $GLOBALS['TL_LANG']['tl_user']['chooseAtLeastOne'] = 'You have to choose at least one option for the field "%s"!';
-?>

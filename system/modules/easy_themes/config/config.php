@@ -98,4 +98,3 @@ if(!(($_GET['do'] == 'repository_manager' && $_GET['uninstall'] == 'easy_themes'
  * Backend form fields
  */
 $GLOBALS['BE_FFL']['checkbox_minOne'] = 'CheckBoxChooseAtLeastOne';
-?>
