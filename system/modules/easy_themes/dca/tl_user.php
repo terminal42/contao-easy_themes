@@ -71,7 +71,7 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['et_mode'] = array
 	'label'                   => &$GLOBALS['TL_LANG']['tl_user']['et_mode'],
 	'exclude'                 => true,
 	'inputType'               => 'select',
-	'options'                 => array('contextmenu','mouseover','inject'),
+	'options'                 => array('contextmenu','mouseover','inject','be_mod'),
 	'reference'               => &$GLOBALS['TL_LANG']['tl_user'],
 	'eval'					  => array('tl_class'=>'clr', 'submitOnChange'=>true)
 );

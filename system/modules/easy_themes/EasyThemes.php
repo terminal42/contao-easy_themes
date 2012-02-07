@@ -253,6 +253,54 @@ class EasyThemes extends Backend
 		$strClass .= ($arrModules['design']['icon'] == 'modPlus.gif') ? 'easy_themes_collapsed' : 'easy_themes_expanded';
 		
 		$arrModules['design']['class'] = ' ' . trim($arrModules['design']['class']) . ((trim($arrModules['design']['class'])) ? ' ' : '') . $strClass;
-		return $arrModules;
+		
+		// mode 'navigation'
+		if ($this->User->et_mode != 'be_mod')
+		{
+			return $arrModules;
+		}
+		
+		$arrThemes = $this->prepareBackendNavigationArray(true);
+		
+		if (!is_array($arrThemes) || !count($arrThemes))
+		{
+			return $arrModules;
+		}
+		
+		$session = $this->Session->getData();
+		$arrThemeNavigation = array();
+		foreach ($arrThemes as $intThemeId => $arrTheme)
+		{
+			$strKey = 'theme_' . $intThemeId;
+			$arrThemeNavigation[$strKey]['icon']  = 'modMinus.gif';
+			$arrThemeNavigation[$strKey]['title'] = specialchars($GLOBALS['TL_LANG']['MSC']['collapseNode']);
+			$arrThemeNavigation[$strKey]['label'] = specialchars($arrTheme['label']);
+			$arrThemeNavigation[$strKey]['href']  = $this->addToUrl('mtg=' . $strKey);
+			
+			// Do not show the modules if the group is closed
+			if (!$blnShowAll && isset($session['backend_modules'][$strKey]) && $session['backend_modules'][$strKey] < 1)
+			{
+				$arrThemeNavigation[$strKey]['modules'] = false;
+				$arrThemeNavigation[$strKey]['icon'] = 'modPlus.gif';
+				$arrThemeNavigation[$strKey]['title'] = specialchars($GLOBALS['TL_LANG']['MSC']['expandNode']);
+
+				continue;
+			}
+			
+			// now the theme modules
+			if (is_array($arrTheme['modules']) && count($arrTheme['modules']))
+			{
+				foreach ($arrTheme['modules'] as $strModuleName => $arrModule)
+				{
+					$arrThemeNavigation[$strKey]['modules'][$strModuleName]['title'] = specialchars($arrModule['title']);
+					$arrThemeNavigation[$strKey]['modules'][$strModuleName]['label'] = specialchars($arrModule['label']);
+					$arrThemeNavigation[$strKey]['modules'][$strModuleName]['icon']  = sprintf(' style="background-image:url(\'%s%s\')"', TL_SCRIPT_URL, $arrModule['imgOrgPath']);
+					$arrThemeNavigation[$strKey]['modules'][$strModuleName]['class'] = 'navigation ' . $strModuleName;
+					$arrThemeNavigation[$strKey]['modules'][$strModuleName]['href']  = $arrModule['href'];
+				}
+			}
+		}
+		
+		return array_merge($arrThemeNavigation, $arrModules);
 	}
 }

@@ -38,6 +38,7 @@ $GLOBALS['TL_LANG']['tl_user']['et_activeModules']	= array('Active modules','Cho
 $GLOBALS['TL_LANG']['tl_user']['contextmenu']		= 'Contextmenu';
 $GLOBALS['TL_LANG']['tl_user']['mouseover']			= 'Mouseover';
 $GLOBALS['TL_LANG']['tl_user']['inject']			= 'DOM-Inject';
+$GLOBALS['TL_LANG']['tl_user']['be_mod']			= 'Back end modules';
 
 /**
  * Legends
