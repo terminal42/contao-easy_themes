@@ -40,9 +40,9 @@ foreach($GLOBALS['TL_DCA']['tl_user']['palettes'] as $palette =>$v)
 	}
     
     if(BackendUser::getInstance()->hasAccess('themes', 'modules'))
-    {
-        $GLOBALS['TL_DCA']['tl_user']['palettes'][$palette] = str_replace('oldBeTheme;','oldBeTheme;{et_legend},et_enable;',$GLOBALS['TL_DCA']['tl_user']['palettes'][$palette]);        
-    }
+    {      
+    	$GLOBALS['TL_DCA']['tl_user']['palettes'][$palette] = str_replace('backendTheme;','backendTheme;{et_legend},et_enable;',$GLOBALS['TL_DCA']['tl_user']['palettes'][$palette]);
+	}
 }
 
 // extend selector
@@ -145,5 +145,3 @@ class tl_user_easy_themes extends Backend
 		return $arrReturn;
 	}
 }
-
-?>
