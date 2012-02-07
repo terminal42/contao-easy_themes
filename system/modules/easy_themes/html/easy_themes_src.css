@@ -74,3 +74,6 @@
 	padding-bottom:0;
 	margin-bottom:0;
 }
+#easy_themes.easy_themes_doNotLaunch {
+	display:none;
+}

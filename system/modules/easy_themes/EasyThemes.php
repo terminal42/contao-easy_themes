@@ -238,4 +238,21 @@ class EasyThemes extends Backend
 		
 		return $arrReturn;
 	}
+
+
+	/**
+	 * Modifies the user navigation
+	 * @param array the modules
+	 * @param boolean show all
+	 * @return array
+	 */
+	public function modifyUserNavigation($arrModules, $blnShowAll)
+	{
+		// add some CSS classes to the design module
+		$strClass = 'easy_themes_toggle ';
+		$strClass .= ($arrModules['design']['icon'] == 'modPlus.gif') ? 'easy_themes_collapsed' : 'easy_themes_expanded';
+		
+		$arrModules['design']['class'] = ' ' . trim($arrModules['design']['class']) . ((trim($arrModules['design']['class'])) ? ' ' : '') . $strClass;
+		return $arrModules;
+	}
 }

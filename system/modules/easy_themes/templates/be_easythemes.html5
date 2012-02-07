@@ -14,9 +14,8 @@
 window.addEvent('domready', function()
 {
 	new EasyThemes({
-		handle: $$('#tl_navigation a.themes')[0].getParent('li'),
-		container: $('easy_themes'),
-		mode: '<?php echo $this->mode; ?>'
+		mode: '<?php echo $this->mode; ?>',
+		delay: 500
 	});
 });
 </script>
