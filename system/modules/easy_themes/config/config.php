@@ -43,14 +43,14 @@ function getBaseScript()
 
 /**
  * Theme modules
- * EXAMPLE OF HOW YOU COULD EXTEND EASY_THEMES WITH YOUR OWN EXTENSION USING THE FOLLOW GLOBALS ARRAY
+ * EXAMPLE OF HOW YOU COULD EXTEND EASY_THEMES WITH YOUR OWN EXTENSION USING THE FOLLOWING GLOBALS ARRAY
  * $GLOBALS['TL_EASY_THEMES_MODULES']['my_module'] = array
  * (
  * 'title'         => 'My Module',
  * 'label'         => 'My Module',
  * 'href'          => 'main.php?do=my_module&theme=%s',
  * 'href_fragment' => 'table=tl_additional_source',
- * 'icon'          => 'system/modules/mein_modul/html/mein_modul.png'
+ * 'icon'          => 'system/modules/my_module/html/my_module_icon.png'
  * );
  * 
  * title:			optional, otherwise easy_themes uses $GLOBALS['TL_LANG']['tl_theme']['...'][1]

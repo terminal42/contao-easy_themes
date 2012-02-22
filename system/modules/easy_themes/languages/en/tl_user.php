@@ -32,7 +32,7 @@
  * Table tl_user
  */
 $GLOBALS['TL_LANG']['tl_user']['et_enable']			= array('Enable EasyTheme','Enable EasyTheme for faster theme editing.');
-$GLOBALS['TL_LANG']['tl_user']['et_mode']			= array('EasyTheme Mode','Decide whether you prefer to use EasyTheme with the contextmenu, the mousover or the direct DOM-Inject mode.');
+$GLOBALS['TL_LANG']['tl_user']['et_mode']			= array('EasyTheme Mode','Decide whether you prefer to use EasyTheme with the contextmenu, the mousover, the direct DOM-Inject or the back end module mode.');
 $GLOBALS['TL_LANG']['tl_user']['et_short']			= array('Enable short view','Enable the short view for EasyTheme.');
 $GLOBALS['TL_LANG']['tl_user']['et_activeModules']	= array('Active modules','Choose the modules you want to be displayed.');
 $GLOBALS['TL_LANG']['tl_user']['contextmenu']		= 'Contextmenu';

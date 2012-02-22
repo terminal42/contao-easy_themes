@@ -10,6 +10,7 @@
 <?php endforeach; ?>
 </ul>
 
+<?php if ($this->mode != 'be_mod'): ?>
 <script>
 window.addEvent('domready', function()
 {
@@ -19,3 +20,4 @@ window.addEvent('domready', function()
 	});
 });
 </script>
+<?php endif; ?>

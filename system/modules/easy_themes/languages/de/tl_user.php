@@ -32,7 +32,7 @@
  * Table tl_user
  */
 $GLOBALS['TL_LANG']['tl_user']['et_enable']       	= array('EasyTheme aktivieren','Aktivieren Sie diese Checkbox, wenn Sie EasyTheme verwenden möchten.');
-$GLOBALS['TL_LANG']['tl_user']['et_mode']         	= array('EasyTheme Modus','Wählen Sie aus, ob Sie EasyTheme lieber als Kontextmenü, beim Mouseover oder als direkten DOM-Inject anzeigen möchten.');
+$GLOBALS['TL_LANG']['tl_user']['et_mode']         	= array('EasyTheme Modus','Wählen Sie aus, ob Sie EasyTheme lieber als Kontextmenü, beim Mouseover, als direkten DOM-Inject oder als Backend-Modul anzeigen möchten.');
 $GLOBALS['TL_LANG']['tl_user']['et_short']    		= array('Kurzansicht aktivieren','Aktivieren Sie die Kurzansicht für EasyTheme.');
 $GLOBALS['TL_LANG']['tl_user']['et_activeModules']	= array('Aktive Module','Wählen Sie hier die Module aus, die Sie angezeigt haben möchten.');
 $GLOBALS['TL_LANG']['tl_user']['contextmenu']		= 'Kontextmenü';
