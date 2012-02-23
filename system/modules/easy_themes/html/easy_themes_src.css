@@ -45,7 +45,8 @@
 }
  
 #easy_themes.easythemes_mouseover, 
-#easy_themes.easythemes_contextmenu {
+#easy_themes.easythemes_contextmenu,
+#easy_themes.easythemes_be_mod {
 	width:135px;
   	position:absolute; 
 	left:20px; 
