@@ -38,6 +38,13 @@
  */
 class EasyThemes extends Backend
 {
+    
+    /**
+     * Load ET
+     * @var bool
+     */
+    private $blnLoadET = true;
+    
 
     /**
      * Initialize the object, import the user class and the tl_theme lang file
@@ -46,6 +53,12 @@ class EasyThemes extends Backend
     {
         parent::__construct();
         $this->import('BackendUser', 'User');
+        
+        // we never need to do anything at all if the user has no access to the themes module
+        if(!$this->User->hasAccess('themes', 'modules'))
+        {
+            $this->blnLoadET = false;
+        }
     }
   
   
@@ -56,6 +69,11 @@ class EasyThemes extends Backend
 	 */	
 	public function addHeadings($strName, $strLanguage)
 	{
+	    if (!$this->blnLoadET)
+        {
+            return false;
+        }
+        
 		if($this->User->et_enable == 1)
 		{
 			$GLOBALS['TL_CSS'][]		= 'system/modules/easy_themes/html/easy_themes.css|screen';
@@ -77,6 +95,11 @@ class EasyThemes extends Backend
 	 */
 	public function addContainer($strContent, $strTemplate)
 	{
+        if (!$this->blnLoadET)
+        {
+            return $strContent;
+        }
+        
 		if($strTemplate == 'be_main')
 		{
 			$strContent = str_replace('<div id="container">','<div id="container">'."\n".$this->generateContainerContent(), $strContent);
@@ -133,20 +156,6 @@ class EasyThemes extends Backend
 		}
 		
 		return $arrReturn;		
-	}
-	
-
-	/**
-	 * Set the GET-Param for the user id so the subpalette can work
-	 * @param string
-	 */
-	public function setUser($strTable)
-	{
-		if ($strTable == 'tl_user' && $this->Input->get('do') == 'login')
-		{
-			$this->import('BackendUser', 'User');
-			$this->Input->setGet('id', $this->User->id);
-		}
 	}
 	
 
@@ -248,6 +257,11 @@ class EasyThemes extends Backend
 	 */
 	public function modifyUserNavigation($arrModules, $blnShowAll)
 	{
+        if (!$this->blnLoadET)
+        {
+            return $arrModules;
+        }
+        
 		// add some CSS classes to the design module
 		$strClass = 'easy_themes_toggle ';
 		$strClass .= ($arrModules['design']['icon'] == 'modPlus.gif') ? 'easy_themes_collapsed' : 'easy_themes_expanded';
