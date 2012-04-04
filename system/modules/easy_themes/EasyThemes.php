@@ -21,7 +21,7 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Yanick Witschi 2011
+ * @copyright  Yanick Witschi 2010 - 2012
  * @author     Yanick Witschi <yanick.witschi@certo-net.ch>
  * @package    easy_themes
  * @license    LGPL
@@ -32,7 +32,7 @@
  * Class EasyThemes
  *
  * Adds the container the JS is calling for to the backend template
- * @copyright  Yanick Witschi 2011
+ * @copyright  Yanick Witschi 2010 - 2012
  * @author     Yanick Witschi <yanick.witschi@certo-net.ch>
  * @package    easy_themes
  */
