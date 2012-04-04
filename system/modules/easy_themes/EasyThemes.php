@@ -317,4 +317,47 @@ class EasyThemes extends Backend
 		
 		return array_merge($arrThemeNavigation, $arrModules);
 	}
+
+
+	/**
+	 * Removes a theme from the settings when a theme gets deleted
+	 * @param DataContainer
+	 */
+	public function removeTheme(DataContainer $dc)
+	{
+		$objUser = $this->Database->execute('SELECT id,et_enable,et_activeModules FROM tl_user');
+		
+		while ($objUser->next())
+		{
+			// if the user doesn't use easy_themes, we skip
+			if ($objUser->et_enable == '')
+			{
+				continue;
+			}
+			
+			$arrModulesOld = deserialize($objUser->et_activeModules);
+			$arrModulesNew = array();
+			
+			// if there's no data we skip
+			if (!is_array($arrModulesOld) || !count($arrModulesOld))
+			{
+				continue;
+			}
+			
+			foreach ($arrModulesOld as $strConfig)
+			{
+				$arrChunks = explode('::', $strConfig);
+				$intThemeID = (int) $arrChunks[0];
+				
+				// we only add it to the new array if it's NOT the one being deleted
+				if ($intThemeID != $dc->id)
+				{
+					$arrModulesNew[] = $strConfig;
+				}
+			}
+			
+			// update the database
+			$this->Database->prepare('UPDATE tl_user SET et_activeModules=? WHERE id=?')->execute(serialize($arrModulesNew), $objUser->id);
+		}
+	}
 }
