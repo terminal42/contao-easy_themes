@@ -96,6 +96,7 @@ if(!(($_GET['do'] == 'repository_manager' && $_GET['uninstall'] == 'easy_themes'
 		$GLOBALS['TL_HOOKS']['parseBackendTemplate'][]              = array('EasyThemes', 'addContainer');
 		$GLOBALS['TL_HOOKS']['loadLanguageFile']['EasyThemesHook']  = array('EasyThemes', 'addHeadings');
 		$GLOBALS['TL_HOOKS']['getUserNavigation'][]					= array('EasyThemes', 'modifyUserNavigation');
+		$GLOBALS['TL_HOOKS']['loadDataContainer'][]					= array('EasyThemes', 'setUser');
 	}
 }
 
