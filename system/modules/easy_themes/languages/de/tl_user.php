@@ -43,7 +43,7 @@ $GLOBALS['TL_LANG']['tl_user']['be_mod']			= 'Backend Module';
 /**
  * Legends
  */
-$GLOBALS['TL_LANG']['tl_user']['et_legend'] = 'easy_themes';
+$GLOBALS['TL_LANG']['tl_user']['et_legend'] = 'EasyTheme';
 
 
 /**
