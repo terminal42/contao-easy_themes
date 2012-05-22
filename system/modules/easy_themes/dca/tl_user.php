@@ -41,7 +41,9 @@ foreach($GLOBALS['TL_DCA']['tl_user']['palettes'] as $palette =>$v)
     
     if(BackendUser::getInstance()->hasAccess('themes', 'modules'))
     {      
-    	$GLOBALS['TL_DCA']['tl_user']['palettes'][$palette] = str_replace('backendTheme;','backendTheme;{et_legend},et_enable;',$GLOBALS['TL_DCA']['tl_user']['palettes'][$palette]);
+        $arrPalettes = explode(";", $v);
+        $arrPalettes[] = '{et_legend},et_enable;';
+        $GLOBALS['TL_DCA']['tl_user']['palettes'][$palette] = implode(";", $arrPalettes);
 	}
 }
 
