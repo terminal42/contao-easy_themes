@@ -34,16 +34,16 @@
 // replace palettes
 foreach($GLOBALS['TL_DCA']['tl_user']['palettes'] as $palette =>$v)
 {
-	if($palette == '__selector__')
+	if ($palette == '__selector__')
 	{
 		continue;
 	}
     
-    if(BackendUser::getInstance()->hasAccess('themes', 'modules'))
+    if (BackendUser::getInstance()->hasAccess('themes', 'modules'))
     {      
-        $arrPalettes = explode(";", $v);
-        $arrPalettes[] = '{et_legend},et_enable;';
-        $GLOBALS['TL_DCA']['tl_user']['palettes'][$palette] = implode(";", $arrPalettes);
+        $arrPalettes	= explode(';', $v);
+        $arrPalettes[]	= '{et_legend},et_enable;';
+        $GLOBALS['TL_DCA']['tl_user']['palettes'][$palette] = implode(';', $arrPalettes);
 	}
 }
 
