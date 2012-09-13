@@ -31,27 +31,9 @@
 /**
  * Table tl_user
  */
-// replace palettes
-foreach($GLOBALS['TL_DCA']['tl_user']['palettes'] as $palette =>$v)
-{
-	if ($palette == '__selector__')
-	{
-		continue;
-	}
-    
-    if (BackendUser::getInstance()->hasAccess('themes', 'modules'))
-    {      
-        $arrPalettes	= explode(';', $v);
-        $arrPalettes[]	= '{et_legend},et_enable;';
-        $GLOBALS['TL_DCA']['tl_user']['palettes'][$palette] = implode(';', $arrPalettes);
-	}
-}
+// modify palette
+$GLOBALS['TL_DCA']['tl_user']['config']['onload_callback'][] = array('tl_user_easy_themes', 'buildPalette');
 
-// extend selector
-$GLOBALS['TL_DCA']['tl_user']['palettes']['__selector__'][] = 'et_enable';
-
-// extend subpalettes
-$GLOBALS['TL_DCA']['tl_user']['subpalettes']['et_enable'] = 'et_mode,et_short,et_activeModules';
 
 // add fields
 $GLOBALS['TL_DCA']['tl_user']['fields']['et_enable'] = array
@@ -60,6 +42,15 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['et_enable'] = array
 	'exclude'                 => true,
 	'inputType'               => 'checkbox',
 	'eval'					  => array('submitOnChange'=>true, 'tl_class'=>'tl_checkbox_single_container')
+);
+$GLOBALS['TL_DCA']['tl_user']['fields']['et_activeModules'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_user']['et_activeModules'],
+	'exclude'                 => true,
+	'inputType'               => 'checkbox_minOne',
+	'options_callback'        => array('tl_user_easy_themes', 'getThemeModules'),
+	'reference'               => &$GLOBALS['TL_LANG']['tl_user']['et_activeModules'],
+	'eval'					  => array('multiple'=>true,'tl_class'=>'clr')
 );
 $GLOBALS['TL_DCA']['tl_user']['fields']['et_short'] = array
 (
@@ -77,15 +68,6 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['et_mode'] = array
 	'reference'               => &$GLOBALS['TL_LANG']['tl_user'],
 	'eval'					  => array('tl_class'=>'clr', 'submitOnChange'=>true)
 );
-$GLOBALS['TL_DCA']['tl_user']['fields']['et_activeModules'] = array
-(
-    'label'                   => &$GLOBALS['TL_LANG']['tl_user']['et_activeModules'],
-	'exclude'                 => true,
-    'inputType'               => 'checkbox_minOne',
-    'options_callback'        => array('tl_user_easy_themes', 'getThemeModules'),
-	'reference'               => &$GLOBALS['TL_LANG']['tl_user']['et_activeModules'],
-	'eval'					  => array('multiple'=>true,'tl_class'=>'clr')
-);
 
 class tl_user_easy_themes extends Backend
 {
@@ -99,8 +81,44 @@ class tl_user_easy_themes extends Backend
 		$this->import('EasyThemes');
     }
 
-	
-    /**
+
+	/**
+	 * Build the palette string
+	 * @param DataContainer
+	 */
+	public function buildPalette(DataContainer $dc)
+	{
+		$objUser = Database::getInstance()->prepare('SELECT * FROM tl_user WHERE id=?')->execute($dc->id);
+
+		foreach($GLOBALS['TL_DCA']['tl_user']['palettes'] as $palette =>$v)
+		{
+			if ($palette == '__selector__')
+			{
+				continue;
+			}
+
+			if (BackendUser::getInstance()->hasAccess('themes', 'modules'))
+			{
+				$arrPalettes	= explode(';', $v);
+				$arrPalettes[]	= '{et_legend},et_enable;';
+				$GLOBALS['TL_DCA']['tl_user']['palettes'][$palette] = implode(';', $arrPalettes);
+			}
+		}
+
+		// extend selector
+		$GLOBALS['TL_DCA']['tl_user']['palettes']['__selector__'][] = 'et_enable';
+
+		// extend subpalettes
+		$strSubpalette = 'et_activeModules,et_mode';
+		if ($objUser->et_mode != 'be_mod')
+		{
+			$strSubpalette .= ',et_short';
+		}
+		$GLOBALS['TL_DCA']['tl_user']['subpalettes']['et_enable'] = $strSubpalette;
+	}
+
+
+	/**
      * Return an array of the theme modules with their corresponding language label
 	 * @param DataContainer
      * @return array
