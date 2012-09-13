@@ -247,6 +247,12 @@ class EasyThemes extends Backend
 				$img = $this->generateImage($strModule . '.gif', $label);
 				$imgOrgPath = sprintf('system/themes/%s/images/%s', $this->getTheme(), $strModule . '.gif');
 			}
+
+			// request token
+			if ($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['appendRT'])
+			{
+				$href .= ((strpos($href, '?') !== false) ?  '&' : '?') . 'rt=' . REQUEST_TOKEN;
+			}
 			
 			// add it to the array
 			$arrReturn[$intThemeId]['modules'][$strModule] = array
@@ -328,7 +334,7 @@ class EasyThemes extends Backend
 				}
 			}
 		}
-		
+
 		return array_merge($arrThemeNavigation, $arrModules);
 	}
 
