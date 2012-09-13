@@ -31,7 +31,7 @@
 /**
  * easy_themes version
  */
-@define('ET_VERSION', '1.4');
+@define('ET_VERSION', '2.0');
 @define('ET_BUILD', '0');
  
 // Define an own function as we cannot use Environment here because we're disturbing the singleton stack if so
