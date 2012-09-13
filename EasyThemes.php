@@ -200,9 +200,9 @@ class EasyThemes extends Backend
 			// get the theme title
 			$objTitle = $this->Database->prepare("SELECT name FROM tl_theme WHERE id=?")->execute($intThemeId);
 			$arrReturn[$intThemeId]['label']	= $objTitle->name;
-			$arrReturn[$intThemeId]['href']		= $this->Environment->script . '?do=themes&amp;act=edit&amp;id=' . $intThemeId;;
-			
-    		// $title - takes the given title from the TL_EASY_THEMES_MODULES array or by default $GLOBALS['TL_LANG']['tl_theme']['...'][1]
+			$arrReturn[$intThemeId]['href']		= $this->Environment->script . '?do=themes&amp;act=edit&amp;id=' . $intThemeId . '&rt=' . REQUEST_TOKEN;
+
+			// $title - takes the given title from the TL_EASY_THEMES_MODULES array or by default $GLOBALS['TL_LANG']['tl_theme']['...'][1]
 			if(isset($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['title']))
 			{
 				$title = $GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['title'];
