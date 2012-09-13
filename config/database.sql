@@ -19,4 +19,5 @@ CREATE TABLE `tl_user` (
   `et_mode` varchar(32) NOT NULL default 'contextmenu',
   `et_short` char(1) NOT NULL default '',
   `et_activeModules` blob NULL,
+  `et_bemodRef` varchar(32) NOT NULL default '',
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

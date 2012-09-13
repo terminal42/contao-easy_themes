@@ -296,7 +296,7 @@ class EasyThemes extends Backend
 		
 		$arrThemes = $this->prepareBackendNavigationArray(true);
 		
-		if (!is_array($arrThemes) || !count($arrThemes))
+		if (!is_array($arrThemes) || empty($arrThemes))
 		{
 			return $arrModules;
 		}
@@ -333,6 +333,14 @@ class EasyThemes extends Backend
 					$arrThemeNavigation[$strKey]['modules'][$strModuleName]['href']  = $arrModule['href'];
 				}
 			}
+		}
+
+		if ($this->User->et_bemodRef)
+		{
+			$intPosition = array_search($this->User->et_bemodRef, array_keys($arrModules));
+			$intPosition++;
+			array_insert($arrModules, $intPosition, $arrThemeNavigation);
+			return $arrModules;
 		}
 
 		return array_merge($arrThemeNavigation, $arrModules);

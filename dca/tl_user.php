@@ -68,6 +68,17 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['et_mode'] = array
 	'reference'               => &$GLOBALS['TL_LANG']['tl_user'],
 	'eval'					  => array('tl_class'=>'clr', 'submitOnChange'=>true)
 );
+$GLOBALS['TL_DCA']['tl_user']['fields']['et_bemodRef'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_user']['et_bemodRef'],
+	'exclude'                 => true,
+	'inputType'               => 'select',
+	'options'                 => array_keys($GLOBALS['BE_MOD']),
+	'reference'               => &$GLOBALS['TL_LANG']['MOD'],
+	'eval'					  => array('tl_class'=>'clr', 'includeBlankOption'=>true)
+);
+
+
 
 class tl_user_easy_themes extends Backend
 {
@@ -110,10 +121,16 @@ class tl_user_easy_themes extends Backend
 
 		// extend subpalettes
 		$strSubpalette = 'et_activeModules,et_mode';
-		if ($objUser->et_mode != 'be_mod')
+
+		if ($objUser->et_mode == 'be_mod')
+		{
+			$strSubpalette .= ',et_bemodRef';
+		}
+		else
 		{
 			$strSubpalette .= ',et_short';
 		}
+
 		$GLOBALS['TL_DCA']['tl_user']['subpalettes']['et_enable'] = $strSubpalette;
 	}
 
