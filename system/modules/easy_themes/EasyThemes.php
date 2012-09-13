@@ -51,8 +51,8 @@ class EasyThemes extends Backend
      */ 	
     public function __construct()
     {
+		$this->import('BackendUser', 'User');
         parent::__construct();
-        $this->import('BackendUser', 'User');
         
         // we never need to do anything at all if the user has no access to the themes module
         if(!$this->User->hasAccess('themes', 'modules'))
