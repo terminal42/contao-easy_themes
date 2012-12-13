@@ -143,7 +143,7 @@ class tl_user_easy_themes extends Backend
 	public function getThemeModules(DataContainer $dc)
 	{
 		// if we don't have any themes at all this is going to be as empty as void
-		$arrThemes = $this->EasyThemes->getThemes();
+		$arrThemes = $this->EasyThemes->getAllThemes();
 		if(!$arrThemes)
 		{
 			return array();
