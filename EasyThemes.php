@@ -119,7 +119,7 @@ class EasyThemes extends Backend
 		// - it has been disabled (what a luminary)
 		// - there is no theme at all
 		// - the user has no module activated at all
-		$arrAllThemes	= $this->getThemes();
+		$arrAllThemes	= $this->getAllThemes();
 		$arrNavArray	= $this->prepareBackendNavigationArray();
 		
 		if($this->User->et_enable != 1 || !$arrAllThemes || !$arrNavArray)
@@ -140,7 +140,7 @@ class EasyThemes extends Backend
      * Return an array of all Themes available
      * @return array|false
      */
-	public function getThemes()
+	public function getAllThemes()
 	{
 		$objThemes = $this->Database->execute('SELECT id,name FROM tl_theme ORDER BY name');
 		if(!$objThemes->numRows)
