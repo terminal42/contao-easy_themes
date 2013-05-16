@@ -51,6 +51,9 @@ var EasyThemes = new Class({
 			});
 		
 		this.init();
+		
+		// Set item to display: block when everything is done
+        this.container.addClass('ready');
 	},
 	
 	init: function() {
