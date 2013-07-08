@@ -28,13 +28,6 @@
  * @filesource
  */
 
-// Define an own function as we cannot use Environment here because we're disturbing the singleton stack if so
-function getBaseScript()
-{
-    $scriptName = (php_sapi_name() == 'cgi' || php_sapi_name() == 'cgi-fcgi') && ($_SERVER['ORIG_PATH_INFO'] ? $_SERVER['ORIG_PATH_INFO'] : $_SERVER['PATH_INFO']) ? ($_SERVER['ORIG_PATH_INFO'] ? $_SERVER['ORIG_PATH_INFO'] : $_SERVER['PATH_INFO']) : ($_SERVER['ORIG_SCRIPT_NAME'] ? $_SERVER['ORIG_SCRIPT_NAME'] : $_SERVER['SCRIPT_NAME']);
-    return preg_replace('/^' . preg_quote(TL_PATH, '/') . '\/?/i', '', $scriptName);
-}
-
 /**
  * Theme modules
  * EXAMPLE OF HOW YOU COULD EXTEND EASY_THEMES WITH YOUR OWN EXTENSION USING THE FOLLOWING GLOBALS ARRAY
@@ -86,7 +79,8 @@ $GLOBALS['TL_EASY_THEMES_MODULES'] = array_merge
  */
 // fix uninstall exception - see #756
 // fix database error - see #822
-if (!(($_GET['do'] == 'repository_manager' && $_GET['uninstall'] == 'easy_themes') || getBaseScript() == $GLOBALS['TL_CONFIG']['websitePath'] . '/contao/install.php')) {
+// fix install exception - see #4
+if (!(($_GET['do'] == 'repository_manager' && $_GET['uninstall'] == 'easy_themes') || (strpos($_SERVER['PHP_SELF'], 'contao/install.php') !== false))) {
     if (TL_MODE == 'BE') {
         $GLOBALS['TL_HOOKS']['parseBackendTemplate'][] = array('EasyThemes', 'addContainer');
         $GLOBALS['TL_HOOKS']['loadLanguageFile']['EasyThemesHook'] = array('EasyThemes', 'addHeadings');
