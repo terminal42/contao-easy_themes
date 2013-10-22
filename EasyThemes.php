@@ -29,7 +29,7 @@ class EasyThemes extends Backend
         parent::__construct();
 
         // we never need to do anything at all if the user has no access to the themes module
-        if (!$this->User->hasAccess('themes', 'modules')) {
+        if (!$this->User->hasAccess('themes', 'modules') || $this->Input->get('popup')) {
             $this->blnLoadET = false;
         }
     }
