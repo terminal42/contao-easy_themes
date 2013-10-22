@@ -1,13 +1,13 @@
 <?php
 
 /**
- * Contao Open Source CMS
+ * Extension for Contao Open Source CMS
  *
- * Copyright (C) 2005-2012 Leo Feyer
+ * Copyright (C) 2009 - 2013 terminal42 gmbh
  *
- * @package Easy_themes
- * @link    http://www.contao.org
- * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
+ * @package    easy_themes
+ * @link       http://www.terminal42.ch
+ * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
 
