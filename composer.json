@@ -23,7 +23,7 @@
     "extra": {
         "contao": {
             "sources":{
-                "system/modules/easy_themes":"system/modules/easy_themes"
+                "./":"system/modules/easy_themes"
             },
             "runonce": [
                 "system/runonce.php"
