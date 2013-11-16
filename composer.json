@@ -17,9 +17,6 @@
         "contao/core": ">=2.11,<3.3",
         "contao-community-alliance/composer-installer":"*"
     },
-    "autoload":{
-        "classmap":["system/"]
-    },
     "replace": {
         "contao-legacy/easy_themes": "*"
     },
