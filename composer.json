@@ -1,9 +1,9 @@
 {
     "name": "terminal42/contao-easy_themes",
     "type": "contao-module",
-    "description": "Contao Open Source CMS extension easy_themes",
+    "description": "Easier management of multiple contao themes",
     "keywords": ["contao", "easy", "themes"],
-    "license": "LGPLv3",
+    "license": "LGPL",
     "authors": [
         {
             "name":"Yanick Witschi",
@@ -14,11 +14,11 @@
     ],
     "require": {
         "php": ">=5.2.7",
-        "contao/core": ">=2.11,<3.3",
+        "contao/core": ">=2.11,<4",
         "contao-community-alliance/composer-installer":"*"
     },
     "autoload":{
-        "classmap":["system/"]
+        "classmap":[""]
     },
     "replace": {
         "contao-legacy/easy_themes": "*"
@@ -26,7 +26,7 @@
     "extra": {
         "contao": {
             "sources":{
-                "system/modules/easy_themes":"system/modules/easy_themes"
+                "":"system/modules/easy_themes"
             },
             "runonce": [
                 "system/runonce.php"
