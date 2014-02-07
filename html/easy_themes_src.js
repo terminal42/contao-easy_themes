@@ -41,9 +41,6 @@ var EasyThemes = new Class({
         });
 
         this.init();
-
-        // Set item to display: block when everything is done
-        this.container.addClass('ready');
     },
 
     init: function () {
@@ -77,5 +74,8 @@ var EasyThemes = new Class({
                     self.intTimeoutId = self.container.fade.delay(self.options.delay, self.container, "out");
                 });
         }
+
+        // Set item to display: block when everything is done
+        this.container.addClass('ready');
     }
 });
