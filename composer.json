@@ -3,7 +3,7 @@
     "type": "contao-module",
     "description": "Contao Open Source CMS extension easy_themes",
     "keywords": ["contao", "easy", "themes"],
-    "license": "LGPLv3",
+    "license": "LGPL",
     "authors": [
         {
             "name":"Yanick Witschi",
@@ -14,17 +14,23 @@
     ],
     "require": {
         "php": ">=5.2.7",
-        "contao/core": ">=2.11,<3.3",
-        "contao-community-alliance/composer-installer":"*"
+        "contao/core": ">=2.11,<4",
+        "contao-community-alliance/composer-installer": "*"
+    },
+    "autoload": {
+        "classmap": [""]
     },
     "replace": {
         "contao-legacy/easy_themes": "*"
     },
     "extra": {
         "contao": {
-            "sources":{
-                "":"system/modules/easy_themes"
-            }
+            "sources": {
+                "": "system/modules/easy_themes"
+            },
+            "runonce": [
+                "system/modules/easy_themes/runonce/runonce.php"
+            ]
         }
     }
 }
