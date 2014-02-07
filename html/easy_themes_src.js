@@ -19,8 +19,8 @@ var EasyThemes = new Class({
         var self = this;
         this.setOptions(options);
 
-        this.layoutSection = document.id('tl_navigation').getElements('.easy_themes_toggle')[0];
-        this.container = document.id('easy_themes');
+        this.layoutSection = document.getElementById('tl_navigation').getElements('.easy_themes_toggle')[0];
+        this.container = document.getElementById('easy_themes');
 
         // get state
         this.isCollapsed = (this.layoutSection.hasClass('easy_themes_collapsed')) ? true : false;
