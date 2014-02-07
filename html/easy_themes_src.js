@@ -1,12 +1,3 @@
-/**
- * Class EasyThemes
- *
- * Provide methods to simplify the themes handling.
- * @copyright  Yanick Witschi 2011
- * @author     Yanick Witschi <yanick.witschi@certo-net.ch>
- * @author       Oliver Hoff <oliver@hofff.com>
- * @package    easy_themes
- */
 var EasyThemes = new Class({
 
     Implements: [ Options ],
@@ -28,8 +19,8 @@ var EasyThemes = new Class({
         var self = this;
         this.setOptions(options);
 
-        this.layoutSection = document.id('tl_navigation').getElements('.easy_themes_toggle')[0];
-        this.container = document.id('easy_themes');
+        this.layoutSection = document.getElementById('tl_navigation').getElements('.easy_themes_toggle')[0];
+        this.container = document.getElementById('easy_themes');
 
         // get state
         this.isCollapsed = (this.layoutSection.hasClass('easy_themes_collapsed')) ? true : false;
@@ -50,9 +41,6 @@ var EasyThemes = new Class({
         });
 
         this.init();
-
-        // Set item to display: block when everything is done
-        this.container.addClass('ready');
     },
 
     init: function () {
@@ -86,5 +74,8 @@ var EasyThemes = new Class({
                     self.intTimeoutId = self.container.fade.delay(self.options.delay, self.container, "out");
                 });
         }
+
+        // Set item to display: block when everything is done
+        this.container.addClass('ready');
     }
 });
