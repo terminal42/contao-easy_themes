@@ -1,12 +1,3 @@
-/**
- * Class EasyThemes
- *
- * Provide methods to simplify the themes handling.
- * @copyright  Yanick Witschi 2011
- * @author     Yanick Witschi <yanick.witschi@certo-net.ch>
- * @author       Oliver Hoff <oliver@hofff.com>
- * @package    easy_themes
- */
 var EasyThemes = new Class({
 
     Implements: [ Options ],
