@@ -29,7 +29,7 @@
                 "": "system/modules/easy_themes"
             },
             "runonce": [
-                "system/modules/easy_themes/runonce/runonce.php"
+                "runonce/runonce.php"
             ]
         }
     }
