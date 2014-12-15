@@ -196,8 +196,9 @@ class EasyThemes extends Backend
 
             // $icon - takes the given icon from the TL_EASY_THEMES_MODULES array or by default uses the Image::getHtml() method
             if (isset($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['icon'])) {
-                $img = Image::getHtml($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['icon'], $label);
-                $imgOrgPath = $GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['icon'];
+                $path = str_replace('##backend_theme##', Backend::getTheme(), $GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['icon']);
+                $img = Image::getHtml($path, $label);
+                $imgOrgPath = $path;
             } else {
                 $img = \Image::getHtml($strModule . '.gif', $label);
                 $imgOrgPath = sprintf('system/themes/%s/images/%s', Backend::getTheme(), $strModule . '.gif');

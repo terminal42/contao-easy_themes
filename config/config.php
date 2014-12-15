@@ -53,9 +53,10 @@ $GLOBALS['TL_EASY_THEMES_MODULES'] = array_merge
         (
             'href_fragment' => 'table=tl_layout'
         ),
-        'image_size' => array
+        'imageSizes' => array
         (
             'href_fragment' => 'table=tl_image_size',
+            'icon'          => 'system/themes/##backend_theme##/images/sizes.gif',
             'appendIf'      => function($themeId) {
                 return version_compare(VERSION, '3.4', '>=');
             }
