@@ -25,11 +25,10 @@ class EasyThemes extends Backend
      */
     public function __construct()
     {
-        $this->import('BackendUser', 'User');
         parent::__construct();
 
         // we never need to do anything at all if the user has no access to the themes module
-        if (!$this->User->hasAccess('themes', 'modules') || $this->Input->get('popup')) {
+        if (!BackendUser::getInstance()->hasAccess('themes', 'modules') || Input::get('popup')) {
             $this->blnLoadET = false;
         }
     }
@@ -46,7 +45,7 @@ class EasyThemes extends Backend
             return false;
         }
 
-        if ($this->User->et_enable == 1) {
+        if (BackendUser::getInstance()->et_enable == 1) {
             $GLOBALS['TL_CSS'][] = 'system/modules/easy_themes/html/easy_themes.css|screen';
             $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/easy_themes/html/easy_themes.js';
         }
@@ -91,14 +90,14 @@ class EasyThemes extends Backend
         $arrAllThemes = $this->getAllThemes();
         $arrNavArray = $this->prepareBackendNavigationArray();
 
-        if ($this->User->et_enable != 1 || !$arrAllThemes || !$arrNavArray) {
+        if (BackendUser::getInstance()->et_enable != 1 || !$arrAllThemes || !$arrNavArray) {
             return '';
         }
 
         $objTemplate = new BackendTemplate('be_easythemes');
-        $objTemplate->mode = $this->User->et_mode;
-        $objTemplate->short = $this->User->et_short;
-        $objTemplate->class = 'easythemes_' . $this->User->et_mode . ' easythemes_' . ($this->User->et_short ? 'short' : 'long');
+        $objTemplate->mode = BackendUser::getInstance()->et_mode;
+        $objTemplate->short = BackendUser::getInstance()->et_short;
+        $objTemplate->class = 'easythemes_' . BackendUser::getInstance()->et_mode . ' easythemes_' . (BackendUser::getInstance()->et_short ? 'short' : 'long');
         $objTemplate->themes = $arrNavArray;
 
         return $objTemplate->parse();
@@ -111,7 +110,7 @@ class EasyThemes extends Backend
      */
     public function getAllThemes()
     {
-        $objThemes = $this->Database->execute('SELECT id,name FROM tl_theme ORDER BY name');
+        $objThemes = Database::getInstance()->execute('SELECT id,name FROM tl_theme ORDER BY name');
         if (!$objThemes->numRows) {
             return false;
         }
@@ -132,9 +131,8 @@ class EasyThemes extends Backend
      */
     public function setUser($strTable)
     {
-        if ($strTable == 'tl_user' && $this->Input->get('do') == 'login') {
-            $this->import('BackendUser', 'User');
-            $this->Input->setGet('id', $this->User->id);
+        if ($strTable == 'tl_user' && Input::get('do') == 'login') {
+            Input::setGet('id', BackendUser::getInstance()->id);
         }
     }
 
@@ -148,12 +146,12 @@ class EasyThemes extends Backend
     {
         // check which theme modules the user wants to display
         // if the user hasn't stored any active modules yet we return false
-        $arrActiveModules = $this->User->et_activeModules;
+        $arrActiveModules = BackendUser::getInstance()->et_activeModules;
         if (!is_array($arrActiveModules)) {
             return false;
         }
 
-        $this->loadLanguageFile('tl_theme');
+        System::loadLanguageFile('tl_theme');
         $arrReturn = array();
 
         foreach ($arrActiveModules as $strConfig) {
@@ -162,9 +160,9 @@ class EasyThemes extends Backend
             $strModule = $arrConfig[1];
 
             // get the theme title
-            $objTitle = $this->Database->prepare("SELECT name FROM tl_theme WHERE id=?")->execute($intThemeId);
+            $objTitle = Database::getInstance()->prepare('SELECT name FROM tl_theme WHERE id=?')->execute($intThemeId);
             $arrReturn[$intThemeId]['label'] = $objTitle->name;
-            $arrReturn[$intThemeId]['href'] = $this->Environment->script . '?do=themes&amp;act=edit&amp;id=' . $intThemeId . '&rt=' . REQUEST_TOKEN;
+            $arrReturn[$intThemeId]['href'] = Environment::get('script') . '?do=themes&amp;act=edit&amp;id=' . $intThemeId . '&rt=' . REQUEST_TOKEN;
 
             // $title - takes the given title from the TL_EASY_THEMES_MODULES array or by default $GLOBALS['TL_LANG']['tl_theme']['...'][1]
             if (isset($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['title'])) {
@@ -184,18 +182,18 @@ class EasyThemes extends Backend
             if (isset($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['href'])) {
                 $href = sprintf($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['href'], $intThemeId);
             } else if (isset($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['href_fragment'])) {
-                $href = $this->Environment->script . '?do=themes&amp;' . $GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['href_fragment'] . '&amp;id=' . $intThemeId;
+                $href = Environment::get('script') . '?do=themes&amp;' . $GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['href_fragment'] . '&amp;id=' . $intThemeId;
             } else {
                 $href = 'javascript:alert(\'No href_fragment or href is specified for this module!\');';
             }
 
-            // $icon - takes the given icon from the TL_EASY_THEMES_MODULES array or by default uses the generateImage() method
+            // $icon - takes the given icon from the TL_EASY_THEMES_MODULES array or by default uses the Image::getHtml() method
             if (isset($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['icon'])) {
-                $img = $this->generateImage($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['icon'], $label);
+                $img = Image::getHtml($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['icon'], $label);
                 $imgOrgPath = $GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['icon'];
             } else {
-                $img = $this->generateImage($strModule . '.gif', $label);
-                $imgOrgPath = sprintf('system/themes/%s/images/%s', $this->getTheme(), $strModule . '.gif');
+                $img = \Image::getHtml($strModule . '.gif', $label);
+                $imgOrgPath = sprintf('system/themes/%s/images/%s', Backend::getTheme(), $strModule . '.gif');
             }
 
             // request token
@@ -206,11 +204,11 @@ class EasyThemes extends Backend
             // add it to the array
             $arrReturn[$intThemeId]['modules'][$strModule] = array
             (
-                'title' => $title,
-                'href' => $href,
-                'img' => $img,
-                'imgOrgPath' => $imgOrgPath,
-                'label' => (($this->User->et_short == 1 && !$blnForceToShowLabel) ? '' : $label)
+                'title'         => $title,
+                'href'          => $href,
+                'img'           => $img,
+                'imgOrgPath'    => $imgOrgPath,
+                'label'         => ((BackendUser::getInstance()->et_short == 1 && !$blnForceToShowLabel) ? '' : $label)
             );
         }
 
@@ -238,7 +236,7 @@ class EasyThemes extends Backend
         $arrModules['design']['class'] = ' ' . trim($arrModules['design']['class']) . ((trim($arrModules['design']['class'])) ? ' ' : '') . $strClass;
 
         // mode 'navigation'
-        if ($this->User->et_mode != 'be_mod') {
+        if (BackendUser::getInstance()->et_mode != 'be_mod') {
             return $arrModules;
         }
 
@@ -278,8 +276,8 @@ class EasyThemes extends Backend
             }
         }
 
-        if ($this->User->et_bemodRef) {
-            $intPosition = array_search($this->User->et_bemodRef, array_keys($arrModules));
+        if (BackendUser::getInstance()->et_bemodRef) {
+            $intPosition = array_search(BackendUser::getInstance()->et_bemodRef, array_keys($arrModules));
             $intPosition++;
             array_insert($arrModules, $intPosition, $arrThemeNavigation);
 
@@ -296,7 +294,7 @@ class EasyThemes extends Backend
      */
     public function removeTheme(DataContainer $dc)
     {
-        $objUser = $this->Database->execute('SELECT id,et_enable,et_activeModules FROM tl_user');
+        $objUser = Database::getInstance()->execute('SELECT id,et_enable,et_activeModules FROM tl_user');
 
         while ($objUser->next()) {
             // if the user doesn't use easy_themes, we skip
@@ -323,7 +321,7 @@ class EasyThemes extends Backend
             }
 
             // update the database
-            $this->Database->prepare('UPDATE tl_user SET et_activeModules=? WHERE id=?')->execute(serialize($arrModulesNew), $objUser->id);
+            Database::getInstance()->prepare('UPDATE tl_user SET et_activeModules=? WHERE id=?')->execute(serialize($arrModulesNew), $objUser->id);
         }
     }
 }
