@@ -164,6 +164,13 @@ class EasyThemes extends Backend
             $arrReturn[$intThemeId]['label'] = $objTitle->name;
             $arrReturn[$intThemeId]['href'] = Environment::get('script') . '?do=themes&amp;act=edit&amp;id=' . $intThemeId . '&rt=' . REQUEST_TOKEN;
 
+            // Append the module only if condition matches
+            if (isset($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['appendIf'])) {
+                if ($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['appendIf']($intThemeId) !== true) {
+                    continue;
+                }
+            }
+
             // $title - takes the given title from the TL_EASY_THEMES_MODULES array or by default $GLOBALS['TL_LANG']['tl_theme']['...'][1]
             if (isset($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['title'])) {
                 $title = $GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['title'];
