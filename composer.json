@@ -13,9 +13,9 @@
         }
     ],
     "require": {
-        "php": ">=5.2.7",
-        "contao/core": ">=2.11,<4",
-        "contao-community-alliance/composer-installer": "*"
+        "php": ">=5.3.7",
+        "contao/core": ">=3.2,<4",
+        "contao-community-alliance/composer-plugin": "2.*"
     },
     "autoload": {
         "classmap": [""]
