@@ -63,17 +63,6 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['et_bemodRef'] = array
 
 class tl_user_easy_themes extends Backend
 {
-
-    /**
-     * Initialize the object and import EasyThemes
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->import('EasyThemes');
-    }
-
-
     /**
      * Build the palette string
      * @param DataContainer
@@ -118,13 +107,14 @@ class tl_user_easy_themes extends Backend
     public function getThemeModules(DataContainer $dc)
     {
         // if we don't have any themes at all this is going to be as empty as void
-        $arrThemes = $this->EasyThemes->getAllThemes();
+        $et = new EasyThemes();
+        $arrThemes = $et->getAllThemes();
         if (!$arrThemes) {
             return array();
         }
 
         // build the modules array
-        $this->loadLanguageFile('tl_theme');
+        System::loadLanguageFile('tl_theme');
         $arrModules = array();
         foreach ($GLOBALS['TL_EASY_THEMES_MODULES'] as $strModule => $arrModule) {
             if (isset($arrModule['label'])) {
