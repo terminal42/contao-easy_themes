@@ -130,6 +130,13 @@ class tl_user_easy_themes extends Backend
         $arrReturn = array();
         foreach ($arrThemes as $intThemeId => $strThemeName) {
             foreach ($arrModules as $strModule => $strLabel) {
+                // Append the module only if condition matches
+                if (isset($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['appendIf'])) {
+                    if ($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['appendIf']($intThemeId) !== true) {
+                        continue;
+                    }
+                }
+                
                 // add it to the array
                 $arrReturn['theme_' . $intThemeId][specialchars($intThemeId . '::' . $strModule)] = $strLabel;
             }
