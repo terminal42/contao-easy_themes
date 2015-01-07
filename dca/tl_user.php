@@ -3,7 +3,7 @@
 /**
  * Extension for Contao Open Source CMS
  *
- * Copyright (C) 2009 - 2014 terminal42 gmbh
+ * Copyright (C) 2009 - 2015 terminal42 gmbh
  *
  * @package    easy_themes
  * @link       http://www.terminal42.ch
@@ -63,17 +63,6 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['et_bemodRef'] = array
 
 class tl_user_easy_themes extends Backend
 {
-
-    /**
-     * Initialize the object and import EasyThemes
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->import('EasyThemes');
-    }
-
-
     /**
      * Build the palette string
      * @param DataContainer
@@ -118,13 +107,14 @@ class tl_user_easy_themes extends Backend
     public function getThemeModules(DataContainer $dc)
     {
         // if we don't have any themes at all this is going to be as empty as void
-        $arrThemes = $this->EasyThemes->getAllThemes();
+        $et = new EasyThemes();
+        $arrThemes = $et->getAllThemes();
         if (!$arrThemes) {
             return array();
         }
 
         // build the modules array
-        $this->loadLanguageFile('tl_theme');
+        System::loadLanguageFile('tl_theme');
         $arrModules = array();
         foreach ($GLOBALS['TL_EASY_THEMES_MODULES'] as $strModule => $arrModule) {
             if (isset($arrModule['label'])) {
@@ -140,6 +130,13 @@ class tl_user_easy_themes extends Backend
         $arrReturn = array();
         foreach ($arrThemes as $intThemeId => $strThemeName) {
             foreach ($arrModules as $strModule => $strLabel) {
+                // Append the module only if condition matches
+                if (isset($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['appendIf'])) {
+                    if ($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['appendIf']($intThemeId) !== true) {
+                        continue;
+                    }
+                }
+                
                 // add it to the array
                 $arrReturn['theme_' . $intThemeId][specialchars($intThemeId . '::' . $strModule)] = $strLabel;
             }
