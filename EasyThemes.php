@@ -83,14 +83,17 @@ class EasyThemes extends Backend
      */
     protected function generateContainerContent()
     {
+        $user = BackendUser::getInstance();
+        
         // we disable easy_themes if:
         // - it has been disabled (what a luminary)
+        // - the mode is "be_mod"
         // - there is no theme at all
         // - the user has no module activated at all
         $arrAllThemes = $this->getAllThemes();
         $arrNavArray = $this->prepareBackendNavigationArray();
 
-        if (BackendUser::getInstance()->et_enable != 1 || !$arrAllThemes || !$arrNavArray) {
+        if ($user->et_enable != 1 || $user->et_mode == 'be_mod' || !$arrAllThemes || !$arrNavArray) {
             return '';
         }
 
