@@ -28,7 +28,10 @@ class EasyThemes extends Backend
         parent::__construct();
 
         // we never need to do anything at all if the user has no access to the themes module
-        if (!BackendUser::getInstance()->hasAccess('themes', 'modules') || Input::get('popup')) {
+        if (BackendUser::getInstance()->et_enable != 1
+            || !BackendUser::getInstance()->hasAccess('themes', 'modules')
+            || Input::get('popup')
+        ) {
             $this->blnLoadET = false;
         }
     }
@@ -45,10 +48,8 @@ class EasyThemes extends Backend
             return false;
         }
 
-        if (BackendUser::getInstance()->et_enable == 1) {
-            $GLOBALS['TL_CSS'][] = 'system/modules/easy_themes/html/easy_themes.css|screen';
-            $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/easy_themes/html/easy_themes.js';
-        }
+        $GLOBALS['TL_CSS'][] = 'system/modules/easy_themes/html/easy_themes.css|screen';
+        $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/easy_themes/html/easy_themes.js';
 
         // make sure the hook is only executed once
         unset($GLOBALS['TL_HOOKS']['loadLanguageFile']['EasyThemesHook']);
@@ -93,7 +94,7 @@ class EasyThemes extends Backend
         $arrAllThemes = $this->getAllThemes();
         $arrNavArray = $this->prepareBackendNavigationArray();
 
-        if ($user->et_enable != 1 || $user->et_mode == 'be_mod' || !$arrAllThemes || !$arrNavArray) {
+        if ($user->et_mode == 'be_mod' || !$arrAllThemes || !$arrNavArray) {
             return '';
         }
 
