@@ -166,7 +166,7 @@ class EasyThemes extends Backend
             // get the theme title
             $objTitle = Database::getInstance()->prepare('SELECT name FROM tl_theme WHERE id=?')->execute($intThemeId);
             $arrReturn[$intThemeId]['label'] = $objTitle->name;
-            $arrReturn[$intThemeId]['href'] = Environment::get('script') . '?do=themes&amp;act=edit&amp;id=' . $intThemeId . '&rt=' . REQUEST_TOKEN;
+            $arrReturn[$intThemeId]['href'] = TL_SCRIPT . '?do=themes&amp;act=edit&amp;id=' . $intThemeId . '&rt=' . REQUEST_TOKEN;
 
             // Append the module only if condition matches
             if (isset($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['appendIf'])) {
@@ -193,7 +193,7 @@ class EasyThemes extends Backend
             if (isset($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['href'])) {
                 $href = sprintf($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['href'], $intThemeId);
             } else if (isset($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['href_fragment'])) {
-                $href = Environment::get('script') . '?do=themes&amp;' . $GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['href_fragment'] . '&amp;id=' . $intThemeId;
+                $href = TL_SCRIPTUse . '?do=themes&amp;' . $GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['href_fragment'] . '&amp;id=' . $intThemeId;
             } else {
                 $href = 'javascript:alert(\'No href_fragment or href is specified for this module!\');';
             }
