@@ -193,7 +193,7 @@ class EasyThemes extends Backend
             if (isset($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['href'])) {
                 $href = sprintf($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['href'], $intThemeId);
             } else if (isset($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['href_fragment'])) {
-                $href = TL_SCRIPTUse . '?do=themes&amp;' . $GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['href_fragment'] . '&amp;id=' . $intThemeId;
+                $href = TL_SCRIPT . '?do=themes&amp;' . $GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['href_fragment'] . '&amp;id=' . $intThemeId;
             } else {
                 $href = 'javascript:alert(\'No href_fragment or href is specified for this module!\');';
             }
