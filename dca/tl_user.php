@@ -24,6 +24,7 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['et_enable'] = array
     'exclude'   => true,
     'inputType' => 'checkbox',
     'eval'      => array('submitOnChange' => true, 'tl_class' => 'tl_checkbox_single_container'),
+    'sql'       => "char(1) NOT NULL default ''",
 );
 
 $GLOBALS['TL_DCA']['tl_user']['fields']['et_activeModules'] = array
@@ -34,6 +35,7 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['et_activeModules'] = array
     'options_callback' => array('tl_user_easy_themes', 'getThemeModules'),
     'reference'        => &$GLOBALS['TL_LANG']['tl_user']['et_activeModules'],
     'eval'             => array('multiple' => true, 'tl_class' => 'clr'),
+    'sql'              => "blob NULL",
 );
 
 $GLOBALS['TL_DCA']['tl_user']['fields']['et_short'] = array
@@ -42,6 +44,7 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['et_short'] = array
     'exclude'   => true,
     'inputType' => 'checkbox',
     'eval'      => array('tl_class' => 'clr'),
+    'sql'       => "char(1) NOT NULL default ''",
 );
 
 $GLOBALS['TL_DCA']['tl_user']['fields']['et_mode'] = array
@@ -52,6 +55,7 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['et_mode'] = array
     'options'   => array('contextmenu', 'mouseover', 'inject', 'be_mod'),
     'reference' => &$GLOBALS['TL_LANG']['tl_user'],
     'eval'      => array('tl_class' => 'clr', 'submitOnChange' => true),
+    'sql'       => "varchar(32) NOT NULL default 'contextmenu'",
 );
 
 $GLOBALS['TL_DCA']['tl_user']['fields']['et_bemodRef'] = array
@@ -62,6 +66,7 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['et_bemodRef'] = array
     'options'   => array_keys($GLOBALS['BE_MOD']),
     'reference' => &$GLOBALS['TL_LANG']['MOD'],
     'eval'      => array('tl_class' => 'clr', 'includeBlankOption' => true),
+    'sql'       => "varchar(32) NOT NULL default ''",
 );
 
 
