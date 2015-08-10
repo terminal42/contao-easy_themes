@@ -20,44 +20,48 @@ $GLOBALS['TL_DCA']['tl_user']['config']['onload_callback'][] = array('tl_user_ea
 // add fields
 $GLOBALS['TL_DCA']['tl_user']['fields']['et_enable'] = array
 (
-    'label' => &$GLOBALS['TL_LANG']['tl_user']['et_enable'],
-    'exclude' => true,
+    'label'     => &$GLOBALS['TL_LANG']['tl_user']['et_enable'],
+    'exclude'   => true,
     'inputType' => 'checkbox',
-    'eval' => array('submitOnChange' => true, 'tl_class' => 'tl_checkbox_single_container')
+    'eval'      => array('submitOnChange' => true, 'tl_class' => 'tl_checkbox_single_container'),
 );
+
 $GLOBALS['TL_DCA']['tl_user']['fields']['et_activeModules'] = array
 (
-    'label' => &$GLOBALS['TL_LANG']['tl_user']['et_activeModules'],
-    'exclude' => true,
-    'inputType' => 'checkbox_minOne',
+    'label'            => &$GLOBALS['TL_LANG']['tl_user']['et_activeModules'],
+    'exclude'          => true,
+    'inputType'        => 'checkbox_minOne',
     'options_callback' => array('tl_user_easy_themes', 'getThemeModules'),
-    'reference' => &$GLOBALS['TL_LANG']['tl_user']['et_activeModules'],
-    'eval' => array('multiple' => true, 'tl_class' => 'clr')
+    'reference'        => &$GLOBALS['TL_LANG']['tl_user']['et_activeModules'],
+    'eval'             => array('multiple' => true, 'tl_class' => 'clr'),
 );
+
 $GLOBALS['TL_DCA']['tl_user']['fields']['et_short'] = array
 (
-    'label' => &$GLOBALS['TL_LANG']['tl_user']['et_short'],
-    'exclude' => true,
+    'label'     => &$GLOBALS['TL_LANG']['tl_user']['et_short'],
+    'exclude'   => true,
     'inputType' => 'checkbox',
-    'eval' => array('tl_class' => 'clr')
+    'eval'      => array('tl_class' => 'clr'),
 );
+
 $GLOBALS['TL_DCA']['tl_user']['fields']['et_mode'] = array
 (
-    'label' => &$GLOBALS['TL_LANG']['tl_user']['et_mode'],
-    'exclude' => true,
+    'label'     => &$GLOBALS['TL_LANG']['tl_user']['et_mode'],
+    'exclude'   => true,
     'inputType' => 'select',
-    'options' => array('contextmenu', 'mouseover', 'inject', 'be_mod'),
+    'options'   => array('contextmenu', 'mouseover', 'inject', 'be_mod'),
     'reference' => &$GLOBALS['TL_LANG']['tl_user'],
-    'eval' => array('tl_class' => 'clr', 'submitOnChange' => true)
+    'eval'      => array('tl_class' => 'clr', 'submitOnChange' => true),
 );
+
 $GLOBALS['TL_DCA']['tl_user']['fields']['et_bemodRef'] = array
 (
-    'label' => &$GLOBALS['TL_LANG']['tl_user']['et_bemodRef'],
-    'exclude' => true,
+    'label'     => &$GLOBALS['TL_LANG']['tl_user']['et_bemodRef'],
+    'exclude'   => true,
     'inputType' => 'select',
-    'options' => array_keys($GLOBALS['BE_MOD']),
+    'options'   => array_keys($GLOBALS['BE_MOD']),
     'reference' => &$GLOBALS['TL_LANG']['MOD'],
-    'eval' => array('tl_class' => 'clr', 'includeBlankOption' => true)
+    'eval'      => array('tl_class' => 'clr', 'includeBlankOption' => true),
 );
 
 
@@ -136,7 +140,7 @@ class tl_user_easy_themes extends Backend
                         continue;
                     }
                 }
-                
+
                 // add it to the array
                 $arrReturn['theme_' . $intThemeId][specialchars($intThemeId . '::' . $strModule)] = $strLabel;
             }
