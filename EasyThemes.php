@@ -27,35 +27,18 @@ class EasyThemes extends Backend
     {
         parent::__construct();
 
-        // we never need to do anything at all if the user has no access to the themes module
-        if (!BackendUser::getInstance()->hasAccess('themes', 'modules') || Input::get('popup')) {
+        // We never need to do anything at all if the user has no access to the themes module
+        if (TL_MODE !== 'BE'
+            || BackendUser::getInstance()->et_enable != 1
+            || !BackendUser::getInstance()->hasAccess('themes', 'modules')
+            || Input::get('popup')
+        ) {
             $this->blnLoadET = false;
-        }
-    }
-
-
-    /**
-     * Add CSS and Javascript
-     * @param string
-     * @return boolean
-     */
-    public function addHeadings($strName, $strLanguage)
-    {
-        if (!$this->blnLoadET) {
-            return false;
-        }
-
-        if (BackendUser::getInstance()->et_enable == 1) {
+        } else {
             $GLOBALS['TL_CSS'][] = 'system/modules/easy_themes/html/easy_themes.css|screen';
             $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/easy_themes/html/easy_themes.js';
         }
-
-        // make sure the hook is only executed once
-        unset($GLOBALS['TL_HOOKS']['loadLanguageFile']['EasyThemesHook']);
-
-        return false;
     }
-
 
     /**
      * Add the container
@@ -93,7 +76,7 @@ class EasyThemes extends Backend
         $arrAllThemes = $this->getAllThemes();
         $arrNavArray = $this->prepareBackendNavigationArray();
 
-        if ($user->et_enable != 1 || $user->et_mode == 'be_mod' || !$arrAllThemes || !$arrNavArray) {
+        if ($user->et_mode == 'be_mod' || !$arrAllThemes || !$arrNavArray) {
             return '';
         }
 
@@ -165,7 +148,7 @@ class EasyThemes extends Backend
             // get the theme title
             $objTitle = Database::getInstance()->prepare('SELECT name FROM tl_theme WHERE id=?')->execute($intThemeId);
             $arrReturn[$intThemeId]['label'] = $objTitle->name;
-            $arrReturn[$intThemeId]['href'] = Environment::get('script') . '?do=themes&amp;act=edit&amp;id=' . $intThemeId . '&rt=' . REQUEST_TOKEN;
+            $arrReturn[$intThemeId]['href'] = TL_SCRIPT . '?do=themes&amp;act=edit&amp;id=' . $intThemeId . '&rt=' . REQUEST_TOKEN;
 
             // Append the module only if condition matches
             if (isset($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['appendIf'])) {
@@ -192,7 +175,7 @@ class EasyThemes extends Backend
             if (isset($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['href'])) {
                 $href = sprintf($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['href'], $intThemeId);
             } else if (isset($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['href_fragment'])) {
-                $href = Environment::get('script') . '?do=themes&amp;' . $GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['href_fragment'] . '&amp;id=' . $intThemeId;
+                $href = TL_SCRIPT . '?do=themes&amp;' . $GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['href_fragment'] . '&amp;id=' . $intThemeId;
             } else {
                 $href = 'javascript:alert(\'No href_fragment or href is specified for this module!\');';
             }

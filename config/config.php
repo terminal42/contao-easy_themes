@@ -75,7 +75,6 @@ $GLOBALS['TL_EASY_THEMES_MODULES'] = array_merge
 if (!(($_GET['do'] == 'repository_manager' && $_GET['uninstall'] == 'easy_themes') || (strpos($_SERVER['PHP_SELF'], 'contao/install.php') !== false))) {
     if (TL_MODE == 'BE') {
         $GLOBALS['TL_HOOKS']['parseBackendTemplate'][] = array('EasyThemes', 'addContainer');
-        $GLOBALS['TL_HOOKS']['loadLanguageFile']['EasyThemesHook'] = array('EasyThemes', 'addHeadings');
         $GLOBALS['TL_HOOKS']['getUserNavigation'][] = array('EasyThemes', 'modifyUserNavigation');
         $GLOBALS['TL_HOOKS']['loadDataContainer'][] = array('EasyThemes', 'setUser');
     }
