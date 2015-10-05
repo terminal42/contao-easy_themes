@@ -28,7 +28,8 @@ class EasyThemes extends Backend
         parent::__construct();
 
         // We never need to do anything at all if the user has no access to the themes module
-        if (BackendUser::getInstance()->et_enable != 1
+        if (TL_MODE !== 'BE'
+            || BackendUser::getInstance()->et_enable != 1
             || !BackendUser::getInstance()->hasAccess('themes', 'modules')
             || Input::get('popup')
         ) {
