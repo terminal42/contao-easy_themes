@@ -27,36 +27,17 @@ class EasyThemes extends Backend
     {
         parent::__construct();
 
-        // we never need to do anything at all if the user has no access to the themes module
+        // We never need to do anything at all if the user has no access to the themes module
         if (BackendUser::getInstance()->et_enable != 1
             || !BackendUser::getInstance()->hasAccess('themes', 'modules')
             || Input::get('popup')
         ) {
             $this->blnLoadET = false;
+        } else {
+            $GLOBALS['TL_CSS'][] = 'system/modules/easy_themes/html/easy_themes.css|screen';
+            $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/easy_themes/html/easy_themes.js';
         }
     }
-
-
-    /**
-     * Add CSS and Javascript
-     * @param string
-     * @return boolean
-     */
-    public function addHeadings($strName, $strLanguage)
-    {
-        if (!$this->blnLoadET) {
-            return false;
-        }
-
-        $GLOBALS['TL_CSS'][] = 'system/modules/easy_themes/html/easy_themes.css|screen';
-        $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/easy_themes/html/easy_themes.js';
-
-        // make sure the hook is only executed once
-        unset($GLOBALS['TL_HOOKS']['loadLanguageFile']['EasyThemesHook']);
-
-        return false;
-    }
-
 
     /**
      * Add the container
