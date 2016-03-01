@@ -146,8 +146,8 @@ class EasyThemes extends Backend
             $strModule = $arrConfig[1];
 
             // get the theme title
-            $objTitle = Database::getInstance()->prepare('SELECT name FROM tl_theme WHERE id=?')->execute($intThemeId);
-            $arrReturn[$intThemeId]['label'] = $objTitle->name;
+            $objTitle = Database::getInstance()->prepare('SELECT name,easy_themes_internalTitle FROM tl_theme WHERE id=?')->execute($intThemeId);
+            $arrReturn[$intThemeId]['label'] = $objTitle->easy_themes_internalTitle ?: $objTitle->name;
             $arrReturn[$intThemeId]['href'] = TL_SCRIPT . '?do=themes&amp;act=edit&amp;id=' . $intThemeId . '&rt=' . REQUEST_TOKEN;
 
             // Append the module only if condition matches
