@@ -72,12 +72,19 @@ $GLOBALS['TL_EASY_THEMES_MODULES'] = array_merge
 // fix uninstall exception - see #756
 // fix database error - see #822
 // fix install exception - see #4
-if (!(($_GET['do'] == 'repository_manager' && $_GET['uninstall'] == 'easy_themes') || (strpos($_SERVER['PHP_SELF'], 'contao/install.php') !== false))) {
-    if (TL_MODE == 'BE') {
-        $GLOBALS['TL_HOOKS']['parseBackendTemplate'][] = array('EasyThemes', 'addContainer');
-        $GLOBALS['TL_HOOKS']['getUserNavigation'][] = array('EasyThemes', 'modifyUserNavigation');
-        $GLOBALS['TL_HOOKS']['loadDataContainer'][] = array('EasyThemes', 'setUser');
-    }
+$repositoryManager = $_GET['do'] == 'repository_manager' && $_GET['uninstall'] == 'easy_themes';
+$installTool = strpos($_SERVER['PHP_SELF'], 'contao/install.php') !== false;
+$composer = $_GET['do'] == 'composer' && $_GET['update'] == 'database';
+$beMode = TL_MODE == 'BE';
+
+if ($beMode
+    && !$repositoryManager
+    && !$installTool
+    && !$composer
+) {
+    $GLOBALS['TL_HOOKS']['parseBackendTemplate'][] = array('EasyThemes', 'addContainer');
+    $GLOBALS['TL_HOOKS']['getUserNavigation'][] = array('EasyThemes', 'modifyUserNavigation');
+    $GLOBALS['TL_HOOKS']['loadDataContainer'][] = array('EasyThemes', 'setUser');
 }
 
 
