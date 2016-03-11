@@ -72,7 +72,7 @@ $GLOBALS['TL_EASY_THEMES_MODULES'] = array_merge
 // fix uninstall exception - see #756
 // fix database error - see #822
 // fix install exception - see #4
-$repositoryManager = $_GET['do'] == 'repository_manager' && $_GET['uninstall'] == 'easy_themes';
+$repositoryManager = $_GET['do'] == 'repository_manager' && $_GET['update'] == 'database';
 $installTool = strpos($_SERVER['PHP_SELF'], 'contao/install.php') !== false;
 $composer = $_GET['do'] == 'composer' && $_GET['update'] == 'database';
 $beMode = TL_MODE == 'BE';
