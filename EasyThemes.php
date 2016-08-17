@@ -53,7 +53,10 @@ class EasyThemes extends Backend
         }
 
         if ($strTemplate == 'be_main') {
-            $strContent = str_replace('<div id="container">', '<div id="container">' . "\n" . $this->generateContainerContent(), $strContent);
+            $strContent = preg_replace('/(<div id="container"[^>]*>)/',
+                '$1' . "\n" . $this->generateContainerContent(),
+                $strContent,
+                1);
         }
 
         return $strContent;
@@ -80,10 +83,18 @@ class EasyThemes extends Backend
             return '';
         }
 
+        $classes = [];
+        $classes[] = 'easythemes_' . BackendUser::getInstance()->et_mode;
+        $classes[] = 'easythemes_' . (BackendUser::getInstance()->et_short ? 'short' : 'long');
+
+        if ($this->isContao4()) {
+            $classes[] = 'isContao4';
+        }
+
         $objTemplate = new BackendTemplate('be_easythemes');
         $objTemplate->mode = BackendUser::getInstance()->et_mode;
         $objTemplate->short = BackendUser::getInstance()->et_short;
-        $objTemplate->class = 'easythemes_' . BackendUser::getInstance()->et_mode . ' easythemes_' . (BackendUser::getInstance()->et_short ? 'short' : 'long');
+        $objTemplate->class =  implode(' ', $classes);
         $objTemplate->themes = $arrNavArray;
 
         return $objTemplate->parse();
@@ -245,6 +256,11 @@ class EasyThemes extends Backend
         foreach ($arrThemes as $intThemeId => $arrTheme) {
             $strKey = 'theme_' . $intThemeId;
             $arrThemeNavigation[$strKey]['icon'] = 'modMinus.gif';
+
+            if ($this->isContao4()) {
+                $arrThemeNavigation[$strKey]['class'] = ' easy_themes node-expanded';
+            }
+
             $arrThemeNavigation[$strKey]['title'] = specialchars($GLOBALS['TL_LANG']['MSC']['collapseNode']);
             $arrThemeNavigation[$strKey]['label'] = specialchars($arrTheme['label']);
             $arrThemeNavigation[$strKey]['href'] = $this->addToUrl('mtg=' . $strKey);
@@ -253,6 +269,11 @@ class EasyThemes extends Backend
             if (!$blnShowAll && isset($session['backend_modules'][$strKey]) && $session['backend_modules'][$strKey] < 1) {
                 $arrThemeNavigation[$strKey]['modules'] = false;
                 $arrThemeNavigation[$strKey]['icon'] = 'modPlus.gif';
+
+                if ($this->isContao4()) {
+                    $arrThemeNavigation[$strKey]['class'] = ' easy_themes node-collapsed';
+                }
+
                 $arrThemeNavigation[$strKey]['title'] = specialchars($GLOBALS['TL_LANG']['MSC']['expandNode']);
 
                 continue;
@@ -317,5 +338,15 @@ class EasyThemes extends Backend
             // update the database
             Database::getInstance()->prepare('UPDATE tl_user SET et_activeModules=? WHERE id=?')->execute(serialize($arrModulesNew), $objUser->id);
         }
+    }
+
+    /**
+     * Checks if it is Contao4
+     *
+     * @return bool
+     */
+    private function isContao4()
+    {
+        return method_exists('Contao\System', 'getContainer');
     }
 }
