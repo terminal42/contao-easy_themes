@@ -23,7 +23,7 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['et_enable'] = array
     'label'     => &$GLOBALS['TL_LANG']['tl_user']['et_enable'],
     'exclude'   => true,
     'inputType' => 'checkbox',
-    'eval'      => array('submitOnChange' => true, 'tl_class' => 'tl_checkbox_single_container'),
+    'eval'      => array('submitOnChange' => true),
     'sql'       => "char(1) NOT NULL default ''",
 );
 
