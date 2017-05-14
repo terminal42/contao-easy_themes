@@ -46,16 +46,25 @@
     display: block;
 }
 
-#easy_themes.easythemes_long .icon {
+#easy_themes .icon {
+    min-width: 20px;
+    display: block;
+}
+
+#easy_themes.easythemes_long .icon { 
     float: left;
     margin: 2px 6px 0 0;
     display: block;
 }
 
+#easy_themes.easythemes_short .easytheme_level_2 li:not(:last-child) {
+    margin-right: 5px;
+}
+
 #easy_themes.easythemes_mouseover,
 #easy_themes.easythemes_contextmenu,
 #easy_themes.easythemes_be_mod {
-    width: 135px;
+    width: 145px;
     position: absolute;
     left: 20px;
     top: 18px;
