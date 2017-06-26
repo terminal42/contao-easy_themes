@@ -213,7 +213,8 @@ class EasyThemes extends Backend
                 'href'          => $href,
                 'img'           => $img,
                 'imgOrgPath'    => $imgOrgPath,
-                'label'         => ((BackendUser::getInstance()->et_short == 1 && !$blnForceToShowLabel) ? '' : $label)
+                'label'         => ((BackendUser::getInstance()->et_short == 1 && !$blnForceToShowLabel) ? '' : $label),
+                'isActive'      => 'themes' === \Input::get('do') && false !== strpos(\Environment::get('requestUri'), $GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['href_fragment']) && $intThemeId === (int) \Input::get('id'),
             );
         }
 
@@ -288,6 +289,7 @@ class EasyThemes extends Backend
                     $arrThemeNavigation[$strKey]['modules'][$strModuleName]['icon'] = sprintf(' style="background-image:url(\'%s%s\')"', TL_SCRIPT_URL, $arrModule['imgOrgPath']);
                     $arrThemeNavigation[$strKey]['modules'][$strModuleName]['class'] = 'navigation ' . $strModuleName;
                     $arrThemeNavigation[$strKey]['modules'][$strModuleName]['href'] = $arrModule['href'];
+                    $arrThemeNavigation[$strKey]['modules'][$strModuleName]['isActive'] = $arrModule['isActive'];
                 }
             }
         }
