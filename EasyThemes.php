@@ -255,6 +255,7 @@ class EasyThemes extends Backend
         $arrThemeNavigation = array();
         foreach ($arrThemes as $intThemeId => $arrTheme) {
             $strKey = 'theme_' . $intThemeId;
+            $blnOpen = (isset($session['backend_modules'][$strKey]) && $session['backend_modules'][$strKey]) || $blnShowAll || version_compare(VERSION, '4.4', '>=');
             $arrThemeNavigation[$strKey]['icon'] = 'modMinus.gif';
 
             if ($this->isContao4()) {
@@ -266,7 +267,7 @@ class EasyThemes extends Backend
             $arrThemeNavigation[$strKey]['href'] = $this->addToUrl('mtg=' . $strKey);
 
             // Do not show the modules if the group is closed
-            if (!$blnShowAll && isset($session['backend_modules'][$strKey]) && $session['backend_modules'][$strKey] < 1) {
+            if (!$blnOpen) {
                 $arrThemeNavigation[$strKey]['modules'] = false;
                 $arrThemeNavigation[$strKey]['icon'] = 'modPlus.gif';
 
