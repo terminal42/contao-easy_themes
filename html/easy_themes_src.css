@@ -30,6 +30,11 @@
     background: url(themes.svg) 7px center no-repeat;
 }
 
+body[class*="version_4-4"] #tl_navigation .tl_level_1_group.easy_themes > a,
+body[class*="version_4-5"] #tl_navigation .tl_level_1_group.easy_themes > a {
+    background: url(/system/themes/flexible/icons/monitor.svg) 3px 2px no-repeat
+}
+
 #tl_navigation .isContao4 .easytheme_level_2 li {
     margin: 0 0 5px 0;
 }
