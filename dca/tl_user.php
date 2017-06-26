@@ -23,7 +23,7 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['et_enable'] = array
     'label'     => &$GLOBALS['TL_LANG']['tl_user']['et_enable'],
     'exclude'   => true,
     'inputType' => 'checkbox',
-    'eval'      => array('submitOnChange' => true, 'tl_class' => 'tl_checkbox_single_container'),
+    'eval'      => array('submitOnChange' => true, 'tl_class' => 'cbx'),
     'sql'       => "char(1) NOT NULL default ''",
 );
 
@@ -54,7 +54,7 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['et_mode'] = array
     'inputType' => 'select',
     'options'   => array('contextmenu', 'mouseover', 'inject', 'be_mod'),
     'reference' => &$GLOBALS['TL_LANG']['tl_user'],
-    'eval'      => array('tl_class' => 'clr', 'submitOnChange' => true),
+    'eval'      => array('tl_class' => 'w50', 'submitOnChange' => true),
     'sql'       => "varchar(32) NOT NULL default 'contextmenu'",
 );
 
@@ -65,7 +65,7 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['et_bemodRef'] = array
     'inputType' => 'select',
     'options'   => array_keys($GLOBALS['BE_MOD']),
     'reference' => &$GLOBALS['TL_LANG']['MOD'],
-    'eval'      => array('tl_class' => 'clr', 'includeBlankOption' => true),
+    'eval'      => array('tl_class' => 'w50', 'includeBlankOption' => true),
     'sql'       => "varchar(32) NOT NULL default ''",
 );
 
