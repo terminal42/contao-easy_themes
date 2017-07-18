@@ -4,7 +4,8 @@ var EasyThemes = new Class({
 
     options: {
         mode: 'contextmenu',
-        delay: 500
+        delay: 500,
+        isContao4: false
     },
 
     container: null,
@@ -21,6 +22,7 @@ var EasyThemes = new Class({
 
         this.layoutSection = document.getElementById('tl_navigation').getElements('.easy_themes_toggle')[0];
         this.container = document.getElementById('easy_themes');
+        console.log(this.layoutSection, this.container);
 
         // get state
         this.isCollapsed = !!(this.layoutSection.hasClass('easy_themes_collapsed'));

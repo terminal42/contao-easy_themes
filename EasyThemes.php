@@ -96,6 +96,7 @@ class EasyThemes extends Backend
         $objTemplate->short = BackendUser::getInstance()->et_short;
         $objTemplate->class =  implode(' ', $classes);
         $objTemplate->themes = $arrNavArray;
+        $objTemplate->isContao4 = $this->isContao4();
 
         return $objTemplate->parse();
     }
@@ -248,7 +249,8 @@ class EasyThemes extends Backend
 
         // add some CSS classes to the design module
         $strClass = 'easy_themes_toggle ';
-        $strClass .= ($arrModules['design']['icon'] == 'modPlus.gif') ? 'easy_themes_collapsed' : 'easy_themes_expanded';
+
+        $strClass .= ($arrModules['design']['icon'] == 'modPlus.gif' && !version_compare(VERSION, '4.4', '>=')) ? 'easy_themes_collapsed' : 'easy_themes_expanded';
 
         $arrModules['design']['class'] = ' ' . trim($arrModules['design']['class']) . ((trim($arrModules['design']['class'])) ? ' ' : '') . $strClass;
 
@@ -361,6 +363,6 @@ class EasyThemes extends Backend
      */
     private function isContao4()
     {
-        return method_exists('Contao\System', 'getContainer');
+        return version_compare(VERSION, '4.4', '>=');
     }
 }
