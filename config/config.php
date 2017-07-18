@@ -85,6 +85,7 @@ if ($beMode
     $GLOBALS['TL_HOOKS']['parseBackendTemplate'][] = array('EasyThemes', 'addContainer');
     $GLOBALS['TL_HOOKS']['getUserNavigation'][] = array('EasyThemes', 'modifyUserNavigation');
     $GLOBALS['TL_HOOKS']['loadDataContainer'][] = array('EasyThemes', 'setUser');
+    $GLOBALS['TL_HOOKS']['parseTemplate'][] = array('EasyThemes', 'addContaoVersionCssClass');
 }
 
 

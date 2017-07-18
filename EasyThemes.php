@@ -133,6 +133,17 @@ class EasyThemes extends Backend
         }
     }
 
+    /**
+     * @param $objTemplate
+     */
+    public function addContaoVersionCssClass($objTemplate)
+    {
+        if ('be_main' === $objTemplate->getName() && $this->isContao4()) {
+
+            $objTemplate->ua .= ' isContao4';
+        }
+    }
+
 
     /**
      * Prepares an array for the backend navigation
