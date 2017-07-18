@@ -23,7 +23,7 @@ var EasyThemes = new Class({
         this.container = document.getElementById('easy_themes');
 
         // get state
-        this.isCollapsed = (this.layoutSection.hasClass('easy_themes_collapsed')) ? true : false;
+        this.isCollapsed = !!(this.layoutSection.hasClass('easy_themes_collapsed'));
 
         // check if the layout section content is loaded or if it is going to be loaded via ajax on the next click
         this.layoutSectionLoaded = Boolean($$('#tl_navigation a.themes').length);
