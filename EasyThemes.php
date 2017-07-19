@@ -77,7 +77,7 @@ class EasyThemes extends Backend
         // - there is no theme at all
         // - the user has no module activated at all
         $arrAllThemes = $this->getAllThemes();
-        $arrNavArray = $this->prepareBackendNavigationArray();
+        $arrNavArray = $this->prepareBackendNavigationArray($this->isContao4());
 
         if ($user->et_mode == 'be_mod' || !$arrAllThemes || !$arrNavArray) {
             return '';
@@ -96,6 +96,7 @@ class EasyThemes extends Backend
         $objTemplate->short = BackendUser::getInstance()->et_short;
         $objTemplate->class =  implode(' ', $classes);
         $objTemplate->themes = $arrNavArray;
+        $objTemplate->isContao4 = $this->isContao4();
 
         return $objTemplate->parse();
     }
@@ -130,6 +131,17 @@ class EasyThemes extends Backend
     {
         if ($strTable == 'tl_user' && Input::get('do') == 'login') {
             Input::setGet('id', BackendUser::getInstance()->id);
+        }
+    }
+
+    /**
+     * @param $objTemplate
+     */
+    public function addContaoVersionCssClass($objTemplate)
+    {
+        if ('be_main' === $objTemplate->getName() && $this->isContao4()) {
+
+            $objTemplate->ua .= ' isContao4';
         }
     }
 
@@ -197,8 +209,11 @@ class EasyThemes extends Backend
                 $img = Image::getHtml($path, $label);
                 $imgOrgPath = $path;
             } else {
-                $img = \Image::getHtml($strModule . '.gif', $label);
-                $imgOrgPath = sprintf('system/themes/%s/images/%s', Backend::getTheme(), $strModule . '.gif');
+                $extension = $this->isContao4() ? '.svg' : '.gif';
+                $folder = $this->isContao4() ? 'icons' : 'images';
+
+                $img = \Image::getHtml($strModule . $extension, $label);
+                $imgOrgPath = sprintf('system/themes/%s/%s/%s', Backend::getTheme(), $folder, $strModule . $extension);
             }
 
             // request token
@@ -213,7 +228,8 @@ class EasyThemes extends Backend
                 'href'          => $href,
                 'img'           => $img,
                 'imgOrgPath'    => $imgOrgPath,
-                'label'         => ((BackendUser::getInstance()->et_short == 1 && !$blnForceToShowLabel) ? '' : $label)
+                'label'         => ((BackendUser::getInstance()->et_short == 1 && !$blnForceToShowLabel) ? '' : $label),
+                'isActive'      => 'themes' === \Input::get('do') && false !== strpos(\Environment::get('requestUri'), $GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['href_fragment']) && $intThemeId === (int) \Input::get('id'),
             );
         }
 
@@ -236,7 +252,8 @@ class EasyThemes extends Backend
 
         // add some CSS classes to the design module
         $strClass = 'easy_themes_toggle ';
-        $strClass .= ($arrModules['design']['icon'] == 'modPlus.gif') ? 'easy_themes_collapsed' : 'easy_themes_expanded';
+
+        $strClass .= ($arrModules['design']['icon'] == 'modPlus.gif' && !$this->isContao4()) ? 'easy_themes_collapsed' : 'easy_themes_expanded';
 
         $arrModules['design']['class'] = ' ' . trim($arrModules['design']['class']) . ((trim($arrModules['design']['class'])) ? ' ' : '') . $strClass;
 
@@ -255,6 +272,7 @@ class EasyThemes extends Backend
         $arrThemeNavigation = array();
         foreach ($arrThemes as $intThemeId => $arrTheme) {
             $strKey = 'theme_' . $intThemeId;
+            $blnOpen = (isset($session['backend_modules'][$strKey]) && $session['backend_modules'][$strKey]) || $blnShowAll || $this->isContao4();
             $arrThemeNavigation[$strKey]['icon'] = 'modMinus.gif';
 
             if ($this->isContao4()) {
@@ -266,7 +284,7 @@ class EasyThemes extends Backend
             $arrThemeNavigation[$strKey]['href'] = $this->addToUrl('mtg=' . $strKey);
 
             // Do not show the modules if the group is closed
-            if (!$blnShowAll && isset($session['backend_modules'][$strKey]) && $session['backend_modules'][$strKey] < 1) {
+            if (!$blnOpen) {
                 $arrThemeNavigation[$strKey]['modules'] = false;
                 $arrThemeNavigation[$strKey]['icon'] = 'modPlus.gif';
 
@@ -287,6 +305,7 @@ class EasyThemes extends Backend
                     $arrThemeNavigation[$strKey]['modules'][$strModuleName]['icon'] = sprintf(' style="background-image:url(\'%s%s\')"', TL_SCRIPT_URL, $arrModule['imgOrgPath']);
                     $arrThemeNavigation[$strKey]['modules'][$strModuleName]['class'] = 'navigation ' . $strModuleName;
                     $arrThemeNavigation[$strKey]['modules'][$strModuleName]['href'] = $arrModule['href'];
+                    $arrThemeNavigation[$strKey]['modules'][$strModuleName]['isActive'] = $arrModule['isActive'];
                 }
             }
         }
@@ -347,6 +366,6 @@ class EasyThemes extends Backend
      */
     private function isContao4()
     {
-        return method_exists('Contao\System', 'getContainer');
+        return version_compare(VERSION, '4.4', '>=');
     }
 }
