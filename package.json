@@ -1,0 +1,13 @@
+{
+  "name": "contao-easy_themes",
+  "bugs": {
+    "url": "https://github.com/terminal42/contao-easy_themes/issues"
+  },
+  "homepage": "https://github.com/terminal42/contao-easy_themes#readme",
+  "dependencies": {
+    "gulp": "^3.9.1",
+    "gulp-clean-css": "^3.7.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^3.0.0"
+  }
+}
