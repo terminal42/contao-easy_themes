@@ -100,7 +100,7 @@ class tl_user_easy_themes extends Backend
 
         if ($objUser->et_mode == 'be_mod') {
             $strSubpalette .= ',et_bemodRef';
-        } else {
+        } elseif (version_compare(VERSION, '4.4', '<')) {
             $strSubpalette .= ',et_short';
         }
 

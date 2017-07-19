@@ -77,7 +77,7 @@ class EasyThemes extends Backend
         // - there is no theme at all
         // - the user has no module activated at all
         $arrAllThemes = $this->getAllThemes();
-        $arrNavArray = $this->prepareBackendNavigationArray();
+        $arrNavArray = $this->prepareBackendNavigationArray($this->isContao4());
 
         if ($user->et_mode == 'be_mod' || !$arrAllThemes || !$arrNavArray) {
             return '';
@@ -209,8 +209,11 @@ class EasyThemes extends Backend
                 $img = Image::getHtml($path, $label);
                 $imgOrgPath = $path;
             } else {
-                $img = \Image::getHtml($strModule . '.gif', $label);
-                $imgOrgPath = sprintf('system/themes/%s/images/%s', Backend::getTheme(), $strModule . '.gif');
+                $extension = $this->isContao4() ? '.svg' : '.gif';
+                $folder = $this->isContao4() ? 'icons' : 'images';
+
+                $img = \Image::getHtml($strModule . $extension, $label);
+                $imgOrgPath = sprintf('system/themes/%s/%s/%s', Backend::getTheme(), $folder, $strModule . $extension);
             }
 
             // request token
@@ -250,7 +253,7 @@ class EasyThemes extends Backend
         // add some CSS classes to the design module
         $strClass = 'easy_themes_toggle ';
 
-        $strClass .= ($arrModules['design']['icon'] == 'modPlus.gif' && !version_compare(VERSION, '4.4', '>=')) ? 'easy_themes_collapsed' : 'easy_themes_expanded';
+        $strClass .= ($arrModules['design']['icon'] == 'modPlus.gif' && !$this->isContao4()) ? 'easy_themes_collapsed' : 'easy_themes_expanded';
 
         $arrModules['design']['class'] = ' ' . trim($arrModules['design']['class']) . ((trim($arrModules['design']['class'])) ? ' ' : '') . $strClass;
 
@@ -269,7 +272,7 @@ class EasyThemes extends Backend
         $arrThemeNavigation = array();
         foreach ($arrThemes as $intThemeId => $arrTheme) {
             $strKey = 'theme_' . $intThemeId;
-            $blnOpen = (isset($session['backend_modules'][$strKey]) && $session['backend_modules'][$strKey]) || $blnShowAll || version_compare(VERSION, '4.4', '>=');
+            $blnOpen = (isset($session['backend_modules'][$strKey]) && $session['backend_modules'][$strKey]) || $blnShowAll || $this->isContao4();
             $arrThemeNavigation[$strKey]['icon'] = 'modMinus.gif';
 
             if ($this->isContao4()) {
