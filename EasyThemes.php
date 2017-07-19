@@ -221,6 +221,26 @@ class EasyThemes extends Backend
                 $href .= ((strpos($href, '?') !== false) ? '&' : '?') . 'rt=' . REQUEST_TOKEN;
             }
 
+            $themeIdToCompare = (int) \Input::get('id');
+            if (($table = \Input::get('table')) && $themeIdToCompare) {
+                \Controller::loadDataContainer($table);
+
+                if (isset($GLOBALS['TL_DCA'][$table]['config']['ptable']) && 'tl_theme' === $GLOBALS['TL_DCA'][$table]['config']['ptable']) {
+                    $themeIdToCompare =  (int) \Database::getInstance()->prepare('SELECT id FROM ' . $table . ' WHERE pid=?')->execute($themeIdToCompare);
+                }
+            }
+
+            list(,$queryStringOfHref) = explode('?', str_replace('&amp;', '&', $href), 2);
+            list(,$queryStringOfCurrent) = explode('?', \Environment::get('requestUri'), 2);
+
+            $paramsOfHref = $this->getRelevantParametersFromQueryString($queryStringOfHref);
+            $paramsOfCurrent = $this->getRelevantParametersFromQueryString($queryStringOfCurrent);
+
+            // Adjust theme ID
+            $paramsOfCurrent['id'] = (string) $themeIdToCompare;
+
+            $isActive = $paramsOfHref === $paramsOfCurrent;
+
             // add it to the array
             $arrReturn[$intThemeId]['modules'][$strModule] = array
             (
@@ -229,7 +249,7 @@ class EasyThemes extends Backend
                 'img'           => $img,
                 'imgOrgPath'    => $imgOrgPath,
                 'label'         => ((BackendUser::getInstance()->et_short == 1 && !$blnForceToShowLabel) ? '' : $label),
-                'isActive'      => 'themes' === \Input::get('do') && false !== strpos(\Environment::get('requestUri'), $GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['href_fragment']) && $intThemeId === (int) \Input::get('id'),
+                'isActive'      => $isActive,
             );
         }
 
@@ -367,5 +387,31 @@ class EasyThemes extends Backend
     private function isContao4()
     {
         return version_compare(VERSION, '4.4', '>=');
+    }
+
+    /**
+     * Extract the relevant parameters from a query string.
+     *
+     * @param string $queryString
+     *
+     * @return array
+     */
+    private function getRelevantParametersFromQueryString($queryString)
+    {
+        parse_str($queryString, $params);
+
+        foreach (array_keys($params) as $k) {
+            if (!in_array($k, ['do', 'id', 'table'])) {
+                unset($params[$k]);
+            }
+
+            if ($params['table'] === 'tl_theme') {
+                unset($params['table']);
+            }
+        }
+
+        ksort($params);
+
+        return (array) $params;
     }
 }
