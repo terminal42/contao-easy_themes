@@ -126,6 +126,7 @@ body[class*="isContao4"] #tl_navigation .tl_level_1_group.easy_themes > a {
 #easy_themes.isContao4.easythemes_mouseover,
 #easy_themes.isContao4.easythemes_contextmenu,
 #easy_themes.isContao4.easythemes_be_mod {
+    width: 170px;
     top: 26px;
     left: 34px;
     border-radius: 0;
