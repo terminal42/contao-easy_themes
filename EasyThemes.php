@@ -221,12 +221,13 @@ class EasyThemes extends Backend
                 $href .= ((strpos($href, '?') !== false) ? '&' : '?') . 'rt=' . REQUEST_TOKEN;
             }
 
-            $themeIdToCompare = (int) \Input::get('id');
-            if (($table = \Input::get('table')) && $themeIdToCompare) {
+            $currentId = (int) \Input::get('id');
+
+            if ($currentId && ($table = \Input::get('table')) && \Input::get('act') === 'edit') {
                 \Controller::loadDataContainer($table);
 
                 if (isset($GLOBALS['TL_DCA'][$table]['config']['ptable']) && 'tl_theme' === $GLOBALS['TL_DCA'][$table]['config']['ptable']) {
-                    $themeIdToCompare =  (int) \Database::getInstance()->prepare('SELECT id FROM ' . $table . ' WHERE pid=?')->execute($themeIdToCompare);
+                    $currentId = (int) \Database::getInstance()->prepare('SELECT pid FROM ' . $table . ' WHERE id=?')->execute($currentId)->pid;
                 }
             }
 
@@ -237,7 +238,7 @@ class EasyThemes extends Backend
             $paramsOfCurrent = $this->getRelevantParametersFromQueryString($queryStringOfCurrent);
 
             // Adjust theme ID
-            $paramsOfCurrent['id'] = (string) $themeIdToCompare;
+            $paramsOfCurrent['id'] = (string) $currentId;
 
             $isActive = $paramsOfHref === $paramsOfCurrent;
 
