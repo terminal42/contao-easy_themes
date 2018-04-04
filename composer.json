@@ -3,7 +3,7 @@
     "type": "contao-module",
     "description": "Contao Open Source CMS extension easy_themes",
     "keywords": ["contao", "easy", "themes"],
-    "license": "LGPL",
+    "license": "LGPL-3.0-or-later",
     "authors": [
         {
             "name":"Yanick Witschi",
