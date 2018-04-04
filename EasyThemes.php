@@ -175,6 +175,11 @@ class EasyThemes extends Backend
             $arrReturn[$intThemeId]['label'] = $objTitle->easy_themes_internalTitle ?: $objTitle->name;
             $arrReturn[$intThemeId]['href'] = TL_SCRIPT . '?do=themes&amp;act=edit&amp;id=' . $intThemeId . '&rt=' . REQUEST_TOKEN;
 
+            // Decode ampersands for Contao 4.5 (see #39)
+            if (version_compare(VERSION, '4.5', '>=')) {
+                $arrReturn[$intThemeId]['href'] = ampersand($arrReturn[$intThemeId]['href'], false);
+            }
+
             // Append the module only if condition matches
             if (isset($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['appendIf'])) {
                 if ($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['appendIf']($intThemeId) !== true) {
@@ -203,6 +208,11 @@ class EasyThemes extends Backend
                 $href = TL_SCRIPT . '?do=themes&amp;' . $GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['href_fragment'] . '&amp;id=' . $intThemeId;
             } else {
                 $href = 'javascript:alert(\'No href_fragment or href is specified for this module!\');';
+            }
+
+            // Decode ampersands for Contao 4.5 (see #39)
+            if (version_compare(VERSION, '4.5', '>=')) {
+                $href = ampersand($href, false);
             }
 
             // $icon - takes the given icon from the TL_EASY_THEMES_MODULES array or by default uses the Image::getHtml() method
@@ -305,6 +315,11 @@ class EasyThemes extends Backend
             $arrThemeNavigation[$strKey]['title'] = specialchars($GLOBALS['TL_LANG']['MSC']['collapseNode']);
             $arrThemeNavigation[$strKey]['label'] = specialchars($arrTheme['label']);
             $arrThemeNavigation[$strKey]['href'] = $this->addToUrl('mtg=' . $strKey);
+
+            // Decode ampersands for Contao 4.5 (see #39)
+            if (version_compare(VERSION, '4.5', '>=')) {
+                $arrThemeNavigation[$strKey]['href'] = ampersand($arrThemeNavigation[$strKey]['href'], false);
+            }
 
             // Do not show the modules if the group is closed
             if (!$blnOpen) {
