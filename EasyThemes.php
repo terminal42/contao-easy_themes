@@ -29,6 +29,7 @@ class EasyThemes extends Backend
 
         // We never need to do anything at all if the user has no access to the themes module
         if (TL_MODE !== 'BE'
+            || !BE_USER_LOGGED_IN
             || BackendUser::getInstance()->et_enable != 1
             || !BackendUser::getInstance()->hasAccess('themes', 'modules')
             || Input::get('popup')
