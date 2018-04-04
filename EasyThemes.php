@@ -27,12 +27,14 @@ class EasyThemes extends Backend
     {
         parent::__construct();
 
+        try {
+            $accessDenied = BackendUser::getInstance()->et_enable != 1 || !BackendUser::getInstance()->hasAccess('themes', 'modules');
+        } catch (\RuntimeException $e) {
+            $accessDenied = true;
+        }
+
         // We never need to do anything at all if the user has no access to the themes module
-        if (TL_MODE !== 'BE'
-            || BackendUser::getInstance()->et_enable != 1
-            || !BackendUser::getInstance()->hasAccess('themes', 'modules')
-            || Input::get('popup')
-        ) {
+        if (TL_MODE !== 'BE' || $accessDenied || Input::get('popup')) {
             $this->blnLoadET = false;
         } else {
             $GLOBALS['TL_CSS'][] = 'system/modules/easy_themes/html/easy_themes.css|screen';
@@ -173,6 +175,11 @@ class EasyThemes extends Backend
             $arrReturn[$intThemeId]['label'] = $objTitle->easy_themes_internalTitle ?: $objTitle->name;
             $arrReturn[$intThemeId]['href'] = TL_SCRIPT . '?do=themes&amp;act=edit&amp;id=' . $intThemeId . '&rt=' . REQUEST_TOKEN;
 
+            // Decode ampersands for Contao 4.5 (see #39)
+            if (version_compare(VERSION, '4.5', '>=')) {
+                $arrReturn[$intThemeId]['href'] = ampersand($arrReturn[$intThemeId]['href'], false);
+            }
+
             // Append the module only if condition matches
             if (isset($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['appendIf'])) {
                 if ($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['appendIf']($intThemeId) !== true) {
@@ -203,6 +210,11 @@ class EasyThemes extends Backend
                 $href = 'javascript:alert(\'No href_fragment or href is specified for this module!\');';
             }
 
+            // Decode ampersands for Contao 4.5 (see #39)
+            if (version_compare(VERSION, '4.5', '>=')) {
+                $href = ampersand($href, false);
+            }
+
             // $icon - takes the given icon from the TL_EASY_THEMES_MODULES array or by default uses the Image::getHtml() method
             if (isset($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['icon'])) {
                 $path = str_replace('##backend_theme##', Backend::getTheme(), $GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['icon']);
@@ -221,12 +233,13 @@ class EasyThemes extends Backend
                 $href .= ((strpos($href, '?') !== false) ? '&' : '?') . 'rt=' . REQUEST_TOKEN;
             }
 
-            $themeIdToCompare = (int) \Input::get('id');
-            if (($table = \Input::get('table')) && $themeIdToCompare) {
+            $currentId = (int) \Input::get('id');
+
+            if ($currentId && ($table = \Input::get('table')) && \Input::get('act') === 'edit') {
                 \Controller::loadDataContainer($table);
 
                 if (isset($GLOBALS['TL_DCA'][$table]['config']['ptable']) && 'tl_theme' === $GLOBALS['TL_DCA'][$table]['config']['ptable']) {
-                    $themeIdToCompare =  (int) \Database::getInstance()->prepare('SELECT id FROM ' . $table . ' WHERE pid=?')->execute($themeIdToCompare);
+                    $currentId = (int) \Database::getInstance()->prepare('SELECT pid FROM ' . $table . ' WHERE id=?')->execute($currentId)->pid;
                 }
             }
 
@@ -237,7 +250,7 @@ class EasyThemes extends Backend
             $paramsOfCurrent = $this->getRelevantParametersFromQueryString($queryStringOfCurrent);
 
             // Adjust theme ID
-            $paramsOfCurrent['id'] = (string) $themeIdToCompare;
+            $paramsOfCurrent['id'] = (string) $currentId;
 
             $isActive = $paramsOfHref === $paramsOfCurrent;
 
@@ -302,6 +315,11 @@ class EasyThemes extends Backend
             $arrThemeNavigation[$strKey]['title'] = specialchars($GLOBALS['TL_LANG']['MSC']['collapseNode']);
             $arrThemeNavigation[$strKey]['label'] = specialchars($arrTheme['label']);
             $arrThemeNavigation[$strKey]['href'] = $this->addToUrl('mtg=' . $strKey);
+
+            // Decode ampersands for Contao 4.5 (see #39)
+            if (version_compare(VERSION, '4.5', '>=')) {
+                $arrThemeNavigation[$strKey]['href'] = ampersand($arrThemeNavigation[$strKey]['href'], false);
+            }
 
             // Do not show the modules if the group is closed
             if (!$blnOpen) {
