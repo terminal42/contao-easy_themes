@@ -27,13 +27,14 @@ class EasyThemes extends Backend
     {
         parent::__construct();
 
+        try {
+            $accessDenied = BackendUser::getInstance()->et_enable != 1 || !BackendUser::getInstance()->hasAccess('themes', 'modules');
+        } catch (\RuntimeException $e) {
+            $accessDenied = true;
+        }
+
         // We never need to do anything at all if the user has no access to the themes module
-        if (TL_MODE !== 'BE'
-            || !BE_USER_LOGGED_IN
-            || BackendUser::getInstance()->et_enable != 1
-            || !BackendUser::getInstance()->hasAccess('themes', 'modules')
-            || Input::get('popup')
-        ) {
+        if (TL_MODE !== 'BE' || $accessDenied || Input::get('popup')) {
             $this->blnLoadET = false;
         } else {
             $GLOBALS['TL_CSS'][] = 'system/modules/easy_themes/html/easy_themes.css|screen';
