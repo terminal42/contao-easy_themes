@@ -72,7 +72,7 @@ class EasyThemes extends Backend
     protected function generateContainerContent()
     {
         $user = BackendUser::getInstance();
-        
+
         // we disable easy_themes if:
         // - it has been disabled (what a luminary)
         // - the mode is "be_mod"
@@ -191,7 +191,12 @@ class EasyThemes extends Backend
             if (isset($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['title'])) {
                 $title = $GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['title'];
             } else {
-                $title = sprintf($GLOBALS['TL_LANG']['tl_theme'][$strModule][1], $intThemeId);
+                // Special label handling for Contao 4.8+ (see #42)
+                if (version_compare(VERSION, '4.8', '>=')) {
+                    $title = sprintf($GLOBALS['TL_LANG']['tl_theme'][$strModule], $intThemeId);
+                } else {
+                    $title = sprintf($GLOBALS['TL_LANG']['tl_theme'][$strModule][1], $intThemeId);
+                }
             }
 
             // $label - takes the given label from the TL_EASY_THEMES_MODULES array or by default $GLOBALS['TL_LANG']['tl_theme']['...'][0]
@@ -199,6 +204,16 @@ class EasyThemes extends Backend
                 $label = $GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['label'];
             } else {
                 $label = $GLOBALS['TL_LANG']['tl_theme'][$strModule][0];
+
+                // Special label handling for Contao 4.8+ (see #42)
+                if (version_compare(VERSION, '4.8', '>=')) {
+                    if (isset($GLOBALS['TL_LANG']['MOD'][$strModule])) {
+                        $label = $GLOBALS['TL_LANG']['MOD'][$strModule];
+                    } elseif (isset($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['href_fragment']) && preg_match('/table=([a-zA-Z_]+)/', $GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['href_fragment'], $matches) && isset($GLOBALS['TL_LANG']['MOD'][$matches[1]])) {
+                        // Extract the table
+                        $label = $GLOBALS['TL_LANG']['MOD'][$matches[1]];
+                    }
+                }
             }
 
             // $href - also see the comments in config/config.php

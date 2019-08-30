@@ -130,6 +130,16 @@ class tl_user_easy_themes extends Backend
                 $label = $arrModule['label'];
             } else {
                 $label = $GLOBALS['TL_LANG']['tl_theme'][$strModule][0];
+
+                // Special label handling for Contao 4.8+ (see #42)
+                if (version_compare(VERSION, '4.8', '>=')) {
+                    if (isset($GLOBALS['TL_LANG']['MOD'][$strModule])) {
+                        $label = $GLOBALS['TL_LANG']['MOD'][$strModule];
+                    } elseif (isset($arrModule['href_fragment']) && preg_match('/table=([a-zA-Z_]+)/', $arrModule['href_fragment'], $matches) && isset($GLOBALS['TL_LANG']['MOD'][$matches[1]])) {
+                        // Extract the table
+                        $label = $GLOBALS['TL_LANG']['MOD'][$matches[1]];
+                    }
+                }
             }
 
             $arrModules[$strModule] = $label;
@@ -153,6 +163,7 @@ class tl_user_easy_themes extends Backend
             // add the label
             $GLOBALS['TL_LANG']['tl_user']['et_activeModules']['theme_' . $intThemeId] = $strThemeName;
         }
+
         return $arrReturn;
     }
 }
