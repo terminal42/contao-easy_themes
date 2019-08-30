@@ -65,6 +65,9 @@ $GLOBALS['TL_EASY_THEMES_MODULES'] = array_merge
     is_array($GLOBALS['TL_EASY_THEMES_MODULES']) ? $GLOBALS['TL_EASY_THEMES_MODULES'] : array()
 );
 
+if (version_compare(VERSION, '4.8', '>=')) {
+    $GLOBALS['TL_EASY_THEMES_MODULES']['edit']['label'] = &$GLOBALS['TL_LANG']['EASY_THEMES']['edit'];
+}
 
 /**
  * Hooks
