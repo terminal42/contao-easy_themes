@@ -6,12 +6,14 @@
     "license": "LGPL-3.0-or-later",
     "authors": [
         {
-            "name":"Yanick Witschi",
-            "email":"yanick.witschi@terminal42.ch",
-            "homepage":"http://www.terminal42.ch",
-            "role":"Developer"
+            "name":"terminal42 gmbh",
+            "homepage":"http://www.terminal42.ch"
         }
     ],
+    "support": {
+        "issues": "https://github.com/terminal42/contao-easy_themes/issues",
+        "source": "https://github.com/terminal42/contao-easy_themes"
+    },
     "require": {
         "php": ">=5.4",
         "contao/core-bundle":"~3.2 || ^4.4.1",
