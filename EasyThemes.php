@@ -164,6 +164,7 @@ class EasyThemes extends Backend
 
         System::loadLanguageFile('tl_theme');
         $arrReturn = array();
+        $url = System::getContainer()->get('router')->generate('contao_backend');
 
         foreach ($arrActiveModules as $strConfig) {
             $arrConfig = explode('::', $strConfig, 2);
@@ -173,7 +174,7 @@ class EasyThemes extends Backend
             // get the theme title
             $objTitle = Database::getInstance()->prepare('SELECT name,easy_themes_internalTitle FROM tl_theme WHERE id=?')->execute($intThemeId);
             $arrReturn[$intThemeId]['label'] = $objTitle->easy_themes_internalTitle ?: $objTitle->name;
-            $arrReturn[$intThemeId]['href'] = '/contao' . '?do=themes&amp;act=edit&amp;id=' . $intThemeId . '&rt=' . REQUEST_TOKEN;
+            $arrReturn[$intThemeId]['href'] = $url . '?do=themes&amp;act=edit&amp;id=' . $intThemeId . '&rt=' . REQUEST_TOKEN;
 
             // Decode ampersands for Contao 4.5 (see #39)
             if (version_compare(VERSION, '4.5', '>=')) {
@@ -220,7 +221,7 @@ class EasyThemes extends Backend
             if (isset($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['href'])) {
                 $href = sprintf($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['href'], $intThemeId);
             } else if (isset($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['href_fragment'])) {
-                $href = '/contao' . '?do=themes&amp;' . $GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['href_fragment'] . '&amp;id=' . $intThemeId;
+                $href = $url . '?do=themes&amp;' . $GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['href_fragment'] . '&amp;id=' . $intThemeId;
             } else {
                 $href = 'javascript:alert(\'No href_fragment or href is specified for this module!\');';
             }
