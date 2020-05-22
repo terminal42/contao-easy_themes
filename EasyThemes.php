@@ -421,7 +421,7 @@ class EasyThemes extends Backend
      */
     private function isContao4()
     {
-        return version_compare(VERSION, '4.4', '>=');
+        return true;
     }
 
     /**
