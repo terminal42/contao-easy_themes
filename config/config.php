@@ -75,9 +75,12 @@ if (version_compare(VERSION, '4.8', '>=')) {
 // fix uninstall exception - see #756
 // fix database error - see #822
 // fix install exception - see #4
-$repositoryManager = $_GET['do'] == 'repository_manager' && $_GET['update'] == 'database';
+// fix 'undefined array key "do"'
+$repositoryManager = (isset($_GET['do']) && $_GET['do'] == 'repository_manager')
+    && (isset($_GET['update']) && $_GET['update'] == 'database');
 $installTool = strpos($_SERVER['PHP_SELF'], 'contao/install.php') !== false;
-$composer = $_GET['do'] == 'composer' && $_GET['update'] == 'database';
+$composer = (isset($_GET['do']) && $_GET['do'] == 'composer')
+    && (isset($_GET['update']) && $_GET['update'] == 'database');
 $beMode = TL_MODE == 'BE';
 
 if ($beMode

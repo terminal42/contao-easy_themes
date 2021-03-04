@@ -194,7 +194,11 @@ class EasyThemes extends Backend
             } else {
                 // Special label handling for Contao 4.8+ (see #42)
                 if (version_compare(VERSION, '4.8', '>=')) {
-                    $title = sprintf($GLOBALS['TL_LANG']['tl_theme'][$strModule], $intThemeId);
+                    // Check if it is still an array and adjust accordingld (see #50)
+                    $title = sprintf(is_array($GLOBALS['TL_LANG']['tl_theme'][$strModule])
+                        ? $GLOBALS['TL_LANG']['tl_theme'][$strModule][1]
+                        : $GLOBALS['TL_LANG']['tl_theme'][$strModule],
+                        $intThemeId);
                 } else {
                     $title = sprintf($GLOBALS['TL_LANG']['tl_theme'][$strModule][1], $intThemeId);
                 }
