@@ -124,7 +124,8 @@ class Helper
             if (isset($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['title'])) {
                 $title = $GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['title'];
             } else {
-                $title = sprintf($GLOBALS['TL_LANG']['tl_theme'][$strModule], $intThemeId);
+                $title = \is_array($GLOBALS['TL_LANG']['tl_theme'][$strModule]) ? $GLOBALS['TL_LANG']['tl_theme'][$strModule][1] : $GLOBALS['TL_LANG']['tl_theme'][$strModule];
+                $title = sprintf($title, $intThemeId);
             }
 
             // $label - takes the given label from the TL_EASY_THEMES_MODULES array or by default $GLOBALS['TL_LANG']['tl_theme']['...'][0]
