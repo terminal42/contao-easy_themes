@@ -1,0 +1,26 @@
+<ul id="easy_themes" class="easytheme_level_1 <?php echo $this->class; ?>">
+    <?php foreach($this->themes as $arrTheme): ?>
+    <li class="easytheme_level_1_group"><a class="navigation" href="<?php echo $arrTheme['href']; ?>" title="<?php echo $arrTheme['title']; ?>"><?php echo $arrTheme['label']; ?></a>
+        <ul class="easytheme_level_2">
+            <?php foreach($arrTheme['modules'] as $arrModule): ?>
+            <li class="easytheme_level_2_link">
+              <a class="navigation" title="<?php echo $arrModule['title']; ?>" href="<?php echo $arrModule['href']; ?>">
+                    <?= $arrModule['label']; ?>
+              </a>
+            </li>
+            <?php endforeach; ?>
+        </ul>
+    </li>
+    <?php endforeach; ?>
+</ul>
+
+<?php if ('be_mod' !== $this->mode): ?>
+<script>
+    window.addEvent('domready', function () {
+        new EasyThemes({
+            mode: '<?php echo $this->mode; ?>',
+            delay: 500
+        });
+    });
+</script>
+<?php endif; ?>

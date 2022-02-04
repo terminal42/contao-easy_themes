@@ -1,13 +1,23 @@
 {
     "name": "terminal42/contao-easy_themes",
-    "type": "contao-module",
+    "type": "contao-bundle",
     "description": "Contao Open Source CMS extension easy_themes",
     "keywords": ["contao", "easy", "themes"],
-    "license": "LGPL-3.0-or-later",
+    "license": "MIT",
     "authors": [
         {
-            "name":"terminal42 gmbh",
-            "homepage":"http://www.terminal42.ch"
+            "name": "terminal42 gmbh",
+            "homepage": "https://www.terminal42.ch"
+        }
+    ],
+    "funding": [
+        {
+            "type": "github",
+            "url": "https://github.com/terminal42"
+        },
+        {
+            "type": "other",
+            "url": "https://ko-fi.com/terminal42"
         }
     ],
     "support": {
@@ -15,24 +25,25 @@
         "source": "https://github.com/terminal42/contao-easy_themes"
     },
     "require": {
-        "php": ">=5.4",
-        "contao/core-bundle":"^4.4",
-        "contao-community-alliance/composer-plugin":"~2.4 || ~3.0"
+        "php": "^7.4 || ^8.0",
+        "contao/core-bundle":"^4.9",
+        "doctrine/dbal": "^2.11 || ^3.0"
+    },
+    "require-dev": {
+        "contao/manager-plugin": "^2.0"
+    },
+    "conflict": {
+        "contao/manager-plugin": "<2.0 || >=3.0"
     },
     "autoload": {
-        "classmap": [""]
-    },
-    "replace": {
-        "contao-legacy/easy_themes": "*"
+        "psr-4": {
+            "Terminal42\\EasyThemesBundle\\": "src/"
+        }
     },
     "extra": {
-        "contao": {
-            "sources": {
-                "": "system/modules/easy_themes"
-            },
-            "runonce": [
-                "runonce/runonce.php"
-            ]
-        }
+        "contao-manager-plugin": "Terminal42\\EasyThemesBundle\\ContaoManager\\Plugin"
+    },
+    "scripts": {
+        "cs-fixer": "tools/ecs/vendor/bin/ecs check src/ --fix --ansi"
     }
 }
