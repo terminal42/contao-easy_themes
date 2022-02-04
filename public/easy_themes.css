@@ -21,28 +21,16 @@
     width: auto;
 }
 
-#tl_navigation .easythemes_long .easytheme_level_2 li {
-    float: none;
-    margin: 0;
-}
-
 #tl_navigation .menu_level_0 > li > a.easy_themes {
     background: url(/system/themes/flexible/icons/monitor.svg) 3px 2px no-repeat
 }
 
 #tl_navigation .easytheme_level_1_group {
-    border-left: none;
+    border-left: none !important;
 }
 
 #tl_navigation .easytheme_level_2 li {
     margin: 0 0 10px 40px;
-}
-
-#tl_navigation .easytheme_level_2 li a {
-    display: block;
-    margin-bottom: 0;
-    padding-top: 3px;
-    padding-bottom: 3px;
 }
 
 #tl_navigation .easytheme_level_2 li a:before {
@@ -77,15 +65,15 @@
     display: block;
 }
 
+#tl_navigation .easytheme_level_2 li a {
+    margin-bottom: 0;
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
 #easy_themes.easythemes_mouseover a.navigation,
 #easy_themes.easythemes_contextmenu a.navigation {
     padding-bottom: 5px;
-}
-
-#easy_themes.easythemes_long .icon {
-    float: left;
-    margin: 2px 6px 0 0;
-    display: block;
 }
 
 #easy_themes.easythemes_mouseover,

@@ -54,7 +54,6 @@ class BackendTemplateListener
 
         $classes = [];
         $classes[] = 'easythemes_'.$this->easyThemes->getCurrentMode();
-        $classes[] = 'easythemes_long';
 
         $objTemplate = new BackendTemplate('be_easythemes');
         $objTemplate->mode = $this->easyThemes->getCurrentMode();
