@@ -22,33 +22,24 @@
  * appendRT:         boolean, optional, if set to true, easy_themes will append the request token (&rt=<REQUEST_TOKEN>)
  * appendIf:         Closure, optional, the module will only be appended if the closure returns true
  */
-$GLOBALS['TL_EASY_THEMES_MODULES'] = array_merge
-(
-    array
-    (
-        'edit' => array
-        (
-            'label' => &$GLOBALS['TL_LANG']['EASY_THEMES']['edit'],
-            'href_fragment' => 'act=edit',
-            'appendRT' => true
-        ),
-        'css' => array
-        (
-            'href_fragment' => 'table=tl_style_sheet'
-        ),
-        'modules' => array
-        (
-            'href_fragment' => 'table=tl_module'
-        ),
-        'layout' => array
-        (
-            'href_fragment' => 'table=tl_layout'
-        ),
-        'imageSizes' => array
-        (
-            'href_fragment' => 'table=tl_image_size',
-            'icon'          => 'system/themes/##backend_theme##/images/sizes.gif'
-        )
-    ),
-    is_array($GLOBALS['TL_EASY_THEMES_MODULES']) ? $GLOBALS['TL_EASY_THEMES_MODULES'] : array()
-);
+$GLOBALS['TL_EASY_THEMES_MODULES'] = $GLOBALS['TL_EASY_THEMES_MODULES'] ?? [];
+$GLOBALS['TL_EASY_THEMES_MODULES'] += [
+    'edit' => [
+        'label' => &$GLOBALS['TL_LANG']['EASY_THEMES']['edit'],
+        'href_fragment' => 'act=edit',
+        'appendRT' => true,
+    ],
+    'css' => [
+        'href_fragment' => 'table=tl_style_sheet',
+    ],
+    'modules' => [
+        'href_fragment' => 'table=tl_module',
+    ],
+    'layout' => [
+        'href_fragment' => 'table=tl_layout',
+    ],
+    'imageSizes' => [
+        'href_fragment' => 'table=tl_image_size',
+        'icon' => 'system/themes/##backend_theme##/images/sizes.gif',
+    ],
+];
