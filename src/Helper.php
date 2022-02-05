@@ -188,7 +188,7 @@ class Helper
             [, $queryStringOfHref] = explode('?', str_replace('&amp;', '&', $href), 2);
 
             $paramsOfHref = $this->getRelevantParametersFromQueryString($queryStringOfHref);
-            $paramsOfCurrent = $this->getRelevantParametersFromQueryString($this->requestStack->getCurrentRequest()->getQueryString());
+            $paramsOfCurrent = $this->getRelevantParametersFromQueryString((string) $this->requestStack->getCurrentRequest()->getQueryString());
 
             // Adjust theme ID
             $paramsOfCurrent['id'] = (string) $currentId;
