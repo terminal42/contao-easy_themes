@@ -171,7 +171,7 @@ class Helper
             }
 
             // request token
-            if ($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['appendRT']) {
+            if ($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['appendRT'] ?? false) {
                 $href .= (false !== strpos($href, '?') ? '&' : '?').'rt='.REQUEST_TOKEN;
             }
 
@@ -225,7 +225,7 @@ class Helper
                 unset($params[$k]);
             }
 
-            if ('tl_theme' === $params['table']) {
+            if ('tl_theme' === ($params['table'] ?? null)) {
                 unset($params['table']);
             }
         }

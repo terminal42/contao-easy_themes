@@ -1,6 +1,6 @@
 <ul id="easy_themes" class="easytheme_level_1 <?php echo $this->class; ?>">
     <?php foreach($this->themes as $arrTheme): ?>
-    <li class="easytheme_level_1_group"><a class="navigation" href="<?php echo $arrTheme['href']; ?>" title="<?php echo $arrTheme['title']; ?>"><?php echo $arrTheme['label']; ?></a>
+      <li class="easytheme_level_1_group"><a class="navigation" href="<?php echo $arrTheme['href']; ?>" title="<?php echo $arrTheme['title'] ?? ''; ?>"><?php echo $arrTheme['label']; ?></a>
         <ul class="easytheme_level_2">
             <?php foreach($arrTheme['modules'] as $arrModule): ?>
             <li class="easytheme_level_2_link">
