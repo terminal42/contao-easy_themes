@@ -45,7 +45,7 @@ class Helper
             && (null === $mode || $mode === $user->et_mode)
             && $this->scopeMatcher->isBackendRequest($request)
             && $user->hasAccess('themes', 'modules')
-            && !\Input::get('popup');
+            && !Input::get('popup');
     }
 
     public function getCurrentMode(): string
@@ -115,7 +115,7 @@ class Helper
                 'do' => 'themes',
                 'act' => 'edit',
                 'id' => $intThemeId,
-                'rt' => REQUEST_TOKEN,
+                'rt' => System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue(),
             ]);
 
             $arrReturn[$intThemeId]['href'] = StringUtil::ampersand($arrReturn[$intThemeId]['href'], false);
