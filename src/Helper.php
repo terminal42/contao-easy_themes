@@ -99,6 +99,7 @@ class Helper
 
         System::loadLanguageFile('tl_theme');
         $arrReturn = [];
+        $requestToken = System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue();
 
         foreach ($arrActiveModules as $strConfig) {
             $arrConfig = explode('::', $strConfig, 2);
@@ -172,7 +173,7 @@ class Helper
 
             // request token
             if ($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule]['appendRT'] ?? false) {
-                $href .= (false !== strpos($href, '?') ? '&' : '?').'rt='.REQUEST_TOKEN;
+                $href .= (false !== strpos($href, '?') ? '&' : '?').'rt='.$requestToken;
             }
 
             $currentId = (int) Input::get('id');
