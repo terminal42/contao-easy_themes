@@ -74,11 +74,7 @@ class UserNavigationListener
         if ($parentNavigation = $this->easyThemes->getParentNavigation()) {
             $intPosition = array_search($parentNavigation, array_keys($arrModules), true);
             ++$intPosition;
-            if (class_exists(ArrayUtil::class)) {
-                ArrayUtil::arrayInsert($arrModules, $intPosition, $arrThemeNavigation);
-            } else {
-                array_insert($arrModules, $intPosition, $arrThemeNavigation);
-            }
+            ArrayUtil::arrayInsert($arrModules, $intPosition, $arrThemeNavigation);
 
             return $arrModules;
         }
