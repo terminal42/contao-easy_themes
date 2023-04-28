@@ -115,7 +115,7 @@ class Helper
                 'do' => 'themes',
                 'act' => 'edit',
                 'id' => $intThemeId,
-                'rt' => System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue(),
+                'rt' => System::getContainer()->get('contao.csrf.token_manager')->getToken(System::getContainer()->getParameter('contao.csrf_token_name'))->getValue(),
             ]);
 
             $arrReturn[$intThemeId]['href'] = StringUtil::ampersand($arrReturn[$intThemeId]['href'], false);
