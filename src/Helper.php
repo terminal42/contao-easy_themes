@@ -105,6 +105,11 @@ class Helper
             $intThemeId = (int) $arrConfig[0];
             $strModule = $arrConfig[1];
 
+            // check if module is existing
+            if (!isset($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule])) {
+                continue;
+            }
+
             // get the theme title
             $arrTheme = $this->connection->fetchAssociative(
                 'SELECT name, easy_themes_internalTitle FROM tl_theme WHERE id=?',
