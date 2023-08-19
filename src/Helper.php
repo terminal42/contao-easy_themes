@@ -106,6 +106,11 @@ class Helper
             $intThemeId = (int) $arrConfig[0];
             $strModule = $arrConfig[1];
 
+            // check if module is existing
+            if (!isset($GLOBALS['TL_EASY_THEMES_MODULES'][$strModule])) {
+                continue;
+            }
+
             // get the theme title
             $arrTheme = $this->connection->fetchAssociative(
                 'SELECT name, easy_themes_internalTitle FROM tl_theme WHERE id=?',
@@ -116,7 +121,7 @@ class Helper
                 'do' => 'themes',
                 'act' => 'edit',
                 'id' => $intThemeId,
-                'rt' => System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue(),
+                'rt' => System::getContainer()->get('contao.csrf.token_manager')->getToken(System::getContainer()->getParameter('contao.csrf_token_name'))->getValue(),
             ]);
 
             $arrReturn[$intThemeId]['href'] = StringUtil::ampersand($arrReturn[$intThemeId]['href'], false);
