@@ -29,6 +29,9 @@ $GLOBALS['TL_EASY_THEMES_MODULES'] += [
         'href_fragment' => 'act=edit',
         'appendRT' => true,
     ],
+    'css' => [
+        'href_fragment' => 'table=tl_style_sheet',
+    ],
     'modules' => [
         'href_fragment' => 'table=tl_module',
     ],
